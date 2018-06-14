@@ -1,7 +1,7 @@
 import React from 'react';
 import path from  'path';
 import express from 'express';
-import ReactDOMServer from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
 import App from 'common/components/App';
@@ -14,7 +14,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('*', (req, res) => {
     const page = makeHtmlTemplate(
-        ReactDOMServer.renderToString(
+        renderToString(
             <StaticRouter location={req.url} context={{}}>
                 <App />
             </StaticRouter>
