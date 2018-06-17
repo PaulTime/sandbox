@@ -13,13 +13,16 @@ const app = express();
 app.use('/', express.static(path.resolve(__dirname)));
 
 app.get('*', (req, res) => {
+    const css = new Set();
+    const context = { insertCss: (...styles) => styles.forEach(style => css.add(style._getCss())) };
+
     const page = makeHtmlTemplate(
         renderToString(
-            <StaticRouter location={req.url} context={{}}>
+            <StaticRouter location={req.url} context={context}>
                 <App />
             </StaticRouter>
         )
-    );
+    , [...css].join(''));
     res.send(page);
 });
 

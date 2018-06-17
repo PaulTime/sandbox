@@ -1,4 +1,4 @@
-export default (html) => `
+export default (html, styles) => `
     <!DOCTYPE html>
     <html lang="uk">
     <head>
@@ -7,6 +7,8 @@ export default (html) => `
 
         <link rel="shortcut icon" href="/static/img/favicon.ico">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        
+        <style type="text/css">${styles}</style>
     </head>
     <body>
         <div id="root">${html}</div>
