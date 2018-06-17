@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import bemDecorator from 'cn-decorator';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import AppLayout from 'common/layouts/AppLayout'
 
 import './index.css';
 
+@withRouter
 @bemDecorator('app-root')
 export default class App extends React.PureComponent {
     render (bem) {

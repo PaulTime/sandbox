@@ -24,9 +24,7 @@ app.get('*', (req, res, next) => {
         const page = makeHtmlTemplate(
             renderToString(
                 <StaticRouter location={req.url} context={{}}>
-                    <Root context={context}>
-                        <App />
-                    </Root>
+                    <App />
                 </StaticRouter>
             )
             , [...css].join(''));

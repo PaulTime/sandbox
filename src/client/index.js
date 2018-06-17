@@ -16,9 +16,7 @@ const context = {
 
 ReactDOM.hydrate(
     <BrowserRouter>
-        <Root context={context}>
-            <App />
-        </Root>
+        <App />
     </BrowserRouter>,
     document.getElementById('root')
 );
