@@ -1,11 +1,12 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = [
     {
         entry: "./src/client/index.js",
         output: {
-            path: path.resolve(__dirname, 'dist', 'public'),
+            path: path.resolve(__dirname, 'dist'),
             filename: "client.js",
         },
         watch: true,
@@ -21,9 +22,35 @@ module.exports = [
                     test: /\.js$/,
                     exclude: /node_modules/,
                     loader: "babel-loader"
-                }
+                },
+                // {
+                //     test: /\.css$/,
+                //     include: /node_modules/,
+                //     use: [
+                //         { loader: "isomorphic-style-loader" },
+                //         {
+                //             loader: "css-loader",
+                //             // options: {
+                //             //     importLoaders: 1
+                //             // }
+                //         },
+                //     ]
+                // },
+                {
+                    test: /\.(png|jpg|gif|svg)$/,
+                    exclude: /(\/fonts)/,
+                    loader: 'file-loader',
+                    options: {
+                        name: '[path][name].[ext]',
+                        context: 'src',
+                    }
+                },
+                { test: /\.css$/, loader: "isomorphic-style-loader!css-loader" }
             ]
-        }
+        },
+        plugins: [
+            new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
+        ]
     },
     {
         entry: {
@@ -51,7 +78,31 @@ module.exports = [
                     test: /\.js$/,
                     exclude: /node_modules/,
                     loader: "babel-loader"
-                }
+                },
+                // {
+                //     test: /\.css$/,
+                //     include: /node_modules/,
+                //     use: [
+                //         { loader: "isomorphic-style-loader" },
+                //         {
+                //             loader: "css-loader",
+                //             // options: {
+                //             //     importLoaders: 1
+                //             // }
+                //         },
+                //     ]
+                // },
+                {
+                    test: /\.(png|jpg|gif|svg)$/,
+                    exclude: /(\/fonts)/,
+                    loader: 'file-loader',
+                    options: {
+                        name: '[path][name].[ext]',
+                        context: 'src',
+                        emitFile: false,
+                    }
+                },
+                { test: /\.css$/, loader: "isomorphic-style-loader!css-loader" }
             ]
         }
     }

@@ -4,10 +4,13 @@ export default (html) => `
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
+
+        <link rel="shortcut icon" href="/static/img/favicon.ico">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
         <div id="root">${html}</div>
-        <script src="/public/client.js"></script>
+        <script src="/client.js"></script>
     </body>
     </html>
 `;
