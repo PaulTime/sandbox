@@ -1,15 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import bemDecorator from 'cn-decorator';
 import { Switch, Route } from 'react-router-dom';
-
-// import 'normalize.css';
 
 import AppLayout from 'common/layouts/AppLayout'
 
 import './index.css';
 
 @bemDecorator('app-root')
-export default class App extends React.Component {
+export default class App extends React.PureComponent {
     render (bem) {
         return (
             <section className={bem()}>
