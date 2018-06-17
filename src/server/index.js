@@ -15,19 +15,13 @@ app.use('/', express.static(path.resolve(__dirname)));
 
 app.get('*', (req, res, next) => {
     try {
-        const css = new Set();
-        const insertCss = (...styles) => {
-            styles.forEach(style => css.add(style._getCss())); // eslint-disable-line no-underscore-dangle
-        };
-        const context = { insertCss };
-
         const page = makeHtmlTemplate(
             renderToString(
                 <StaticRouter location={req.url} context={{}}>
                     <App />
                 </StaticRouter>
             )
-            , [...css].join(''));
+            );
         res.send(page);
     } catch (err) {
         next(err);

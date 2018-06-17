@@ -1,6 +1,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = [
     {
@@ -10,6 +11,7 @@ module.exports = [
             filename: "client.js",
         },
         watch: true,
+        devtool: 'eval',
         resolve: {
             modules: [
                 "src",
@@ -23,19 +25,23 @@ module.exports = [
                     exclude: /node_modules/,
                     loader: "babel-loader"
                 },
-                // {
-                //     test: /\.css$/,
-                //     include: /node_modules/,
-                //     use: [
-                //         { loader: "isomorphic-style-loader" },
-                //         {
-                //             loader: "css-loader",
-                //             // options: {
-                //             //     importLoaders: 1
-                //             // }
-                //         },
-                //     ]
-                // },
+                {
+                    test: /\.(sa|sc|c)ss$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            'css-loader',
+                            // {
+                            //     loader: 'postcss-loader',
+                            //     options: {
+                            //         config: {
+                            //             path: path.resolve(__dirname, './postcss.config.js'),
+                            //         },
+                            //     }
+                            // }
+                        ]
+                    })
+                },
                 {
                     test: /\.(png|jpg|gif|svg)$/,
                     exclude: /(\/fonts)/,
@@ -45,11 +51,14 @@ module.exports = [
                         context: 'src',
                     }
                 },
-                { test: /\.css$/, loader: "isomorphic-style-loader!css-loader" }
             ]
         },
         plugins: [
             new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
+            new ExtractTextPlugin({
+                filename: 'client.css',
+                allChunks: true,
+            }),
         ]
     },
     {
@@ -63,6 +72,7 @@ module.exports = [
         target: "node",
         externals: [nodeExternals()],
         watch: true,
+        devtool: 'eval',
         node: {
             __dirname: false
         },
@@ -79,19 +89,10 @@ module.exports = [
                     exclude: /node_modules/,
                     loader: "babel-loader"
                 },
-                // {
-                //     test: /\.css$/,
-                //     include: /node_modules/,
-                //     use: [
-                //         { loader: "isomorphic-style-loader" },
-                //         {
-                //             loader: "css-loader",
-                //             // options: {
-                //             //     importLoaders: 1
-                //             // }
-                //         },
-                //     ]
-                // },
+                {
+                    test: /\.(sa|sc|c)ss$/,
+                    loader: 'ignore-loader',
+                },
                 {
                     test: /\.(png|jpg|gif|svg)$/,
                     exclude: /(\/fonts)/,
@@ -102,7 +103,6 @@ module.exports = [
                         emitFile: false,
                     }
                 },
-                { test: /\.css$/, loader: "isomorphic-style-loader!css-loader" }
             ]
         }
     }
