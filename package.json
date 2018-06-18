@@ -7,7 +7,6 @@
     "watch:server": "nodemon --watch dist/server.js \"./dist/server.js\""
   },
   "dependencies": {
-    "ejs": "^2.6.1",
     "express": "^4.16.2",
     "normalize.css": "^8.0.0",
     "react": "^16.2.0",
@@ -25,7 +24,6 @@
     "cn-decorator": "^2.1.0",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
-    "express-handlebars": "^3.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "html-webpack-inline-source-plugin": "0.0.10",

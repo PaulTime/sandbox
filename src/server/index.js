@@ -16,14 +16,14 @@ app.set('views', path.resolve(__dirname));
 
 app.use('/', express.static(path.resolve(__dirname)));
 
-app.get('*', (req, res, next) => {
+app.get('*', (req, res) => {
     const page = renderToString(
         <StaticRouter location={req.url} context={{}}>
             <App />
         </StaticRouter>
     );
 
-    res.render('index', { page });
+    res.render('page', { page });
 });
 
 app.listen(process.env.PORT || 3000, () => {

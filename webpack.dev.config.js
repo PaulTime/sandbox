@@ -57,7 +57,7 @@ module.exports = [
         },
         plugins: [
             new HtmlWebpackPlugin({
-                filename: 'index.html',
+                filename: 'page.html',
                 template: 'src/server/template.html',
                 inlineSource: '.css$'
             }),
