@@ -1,26 +1,29 @@
 import React from 'react';
 import path from  'path';
 import express from 'express';
-import ReactDOMServer from 'react-dom/server';
+import mustacheExpress from 'mustache-express';
+import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
 import App from 'common/components/App';
 
-import makeHtmlTemplate from './template.js';
-
 const app = express();
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.engine('html', mustacheExpress());
+
+app.set('view engine', 'html');
+app.set('views', path.resolve(__dirname));
+
+app.use('/', express.static(path.resolve(__dirname)));
 
 app.get('*', (req, res) => {
-    const page = makeHtmlTemplate(
-        ReactDOMServer.renderToString(
-            <StaticRouter location={req.url} context={{}}>
-                <App />
-            </StaticRouter>
-        )
+    const page = renderToString(
+        <StaticRouter location={req.url} context={{}}>
+            <App />
+        </StaticRouter>
     );
-    res.send(page);
+
+    res.render('page', { page });
 });
 
 app.listen(process.env.PORT || 3000, () => {
