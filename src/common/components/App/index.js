@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import bemDecorator from 'cn-decorator';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
-// import 'normalize.css/normalize.css';
+import 'normalize.css/normalize.css';
 
 import AppLayout from 'common/layouts/AppLayout'
 

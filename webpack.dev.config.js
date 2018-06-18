@@ -2,6 +2,8 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 module.exports = [
     {
@@ -54,11 +56,17 @@ module.exports = [
             ]
         },
         plugins: [
-            new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
+            new HtmlWebpackPlugin({
+                filename: 'index.html',
+                template: 'src/server/template.html',
+                inlineSource: '.css$'
+            }),
             new ExtractTextPlugin({
                 filename: 'client.css',
                 allChunks: true,
             }),
+            new HtmlWebpackInlineSourcePlugin(),
+            new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
         ]
     },
     {
@@ -70,7 +78,10 @@ module.exports = [
             filename: "[name].js",
         },
         target: "node",
-        externals: [nodeExternals()],
+        externals: [nodeExternals({
+            // load non-javascript files with extensions, presumably via loaders
+            whitelist: [/\.(?!(?:jsx?|json)$).{1,5}$/i],
+        }),],
         watch: true,
         devtool: 'eval',
         node: {
@@ -91,7 +102,7 @@ module.exports = [
                 },
                 {
                     test: /\.(sa|sc|c)ss$/,
-                    loader: 'ignore-loader',
+                    use: 'null-loader'
                 },
                 {
                     test: /\.(png|jpg|gif|svg)$/,
