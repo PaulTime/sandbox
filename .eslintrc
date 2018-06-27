@@ -36,6 +36,11 @@
     "semi": [
       "error",
       "always"
+    ],
+    "no-bitwise": "error",
+    "object-curly-spacing": [
+      "error",
+      "always"
     ]
   }
 }
