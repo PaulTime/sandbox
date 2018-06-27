@@ -1,9 +1,9 @@
 import React from 'react';
-import path from  'path';
+import path from 'path';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
-import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
+import {renderToString} from 'react-dom/server';
+import {StaticRouter} from 'react-router-dom';
 
 import App from 'common/components/App';
 
@@ -17,15 +17,15 @@ app.set('views', path.resolve(__dirname));
 app.use('/', express.static(path.resolve(__dirname)));
 
 app.get('*', (req, res) => {
-    const page = renderToString(
-        <StaticRouter location={req.url} context={{}}>
-            <App />
-        </StaticRouter>
-    );
+  const page = renderToString(
+    <StaticRouter location={req.url} context={{}}>
+      <App/>
+    </StaticRouter>
+  );
 
-    res.render('page', { page });
+  res.render('page', {page});
 });
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log(`listening on http://localhost:${process.env.PORT || 3000}`);
+  console.log(`listening on http://localhost:${process.env.PORT || 3000}`); // eslint-disable-line no-console
 });
