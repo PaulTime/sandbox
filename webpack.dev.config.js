@@ -119,7 +119,7 @@ module.exports = [
     },
     plugins: [
       new NodemonPlugin({
-        watch: path.resolve('./dist/server.js'),
+        watch: path.resolve(__dirname, 'dist', 'server.js'),
         verbose: true
       })
     ],
