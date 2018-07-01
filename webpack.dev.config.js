@@ -3,21 +3,21 @@ const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const NodemonPlugin = require( 'nodemon-webpack-plugin' );
 
 module.exports = [
   {
-    entry: "./src/client/index.js",
+    entry: './src/client/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: "client.js",
+      filename: 'client.js',
     },
     watch: true,
     devtool: 'eval',
     resolve: {
       modules: [
-        "src",
-        "node_modules"
+        'src',
+        'node_modules'
       ],
     },
     module: {
@@ -25,7 +25,7 @@ module.exports = [
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: "babel-loader"
+          loader: 'babel-loader'
         },
         {
           test: /\.(sa|sc|c)ss$/,
@@ -64,18 +64,21 @@ module.exports = [
         filename: 'client.css',
         allChunks: true,
       }),
-      new CopyWebpackPlugin([{from: 'src/static', to: 'static'}]),
-    ]
+      new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
+    ],
+    optimization: {
+      noEmitOnErrors: true
+    }
   },
   {
     entry: {
-      server: "./src/server/index.js"
+      server: './src/server/index.js'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: "[name].js",
+      filename: '[name].js',
     },
-    target: "node",
+    target: 'node',
     externals: [nodeExternals({
       // load non-javascript files with extensions, presumably via loaders
       whitelist: [/\.(?!(?:jsx?|json)$).{1,5}$/i],
@@ -87,8 +90,8 @@ module.exports = [
     },
     resolve: {
       modules: [
-        "src",
-        "node_modules"
+        'src',
+        'node_modules'
       ],
     },
     module: {
@@ -96,7 +99,7 @@ module.exports = [
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: "babel-loader"
+          loader: 'babel-loader'
         },
         {
           test: /\.(sa|sc|c)ss$/,
@@ -113,6 +116,15 @@ module.exports = [
           }
         },
       ]
+    },
+    plugins: [
+      new NodemonPlugin({
+        watch: path.resolve('./dist/server.js'),
+        verbose: true
+      })
+    ],
+    optimization: {
+      noEmitOnErrors: true
     }
-  }
+  },
 ];
