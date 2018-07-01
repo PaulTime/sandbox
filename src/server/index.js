@@ -4,7 +4,9 @@ import express from 'express';
 import mustacheExpress from 'mustache-express';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
+import configStore from 'common/store';
 import App from 'common/components/App';
 
 // if (module.hot) {
@@ -27,13 +29,22 @@ app.set('views', path.resolve(__dirname));
 app.use('/', express.static(path.resolve(__dirname)));
 
 app.get('*', (req, res) => {
+  const store = configStore();
+
   const page = renderToString(
-    <StaticRouter location={req.url} context={{}}>
-      <App/>
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={req.url} context={{}}>
+        <App/>
+      </StaticRouter>
+    </Provider>
   );
 
-  res.render('page', { page });
+  const preloadedState = store.getState();
+
+  res.render('page', {
+    page,
+    preloadedState: JSON.stringify(preloadedState).replace(/</g, '\\u003c'),
+  });
 });
 
 app.listen(process.env.PORT || 3000, () => {
