@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -7,13 +8,15 @@ const NodemonPlugin = require( 'nodemon-webpack-plugin' );
 
 module.exports = [
   {
-    entry: './src/client/index.js',
+    entry: [
+      './src/client/index.js'
+    ],
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'client.js',
     },
     watch: true,
-    devtool: 'eval',
+    devtool: 'source-map',
     resolve: {
       modules: [
         'src',
@@ -37,7 +40,7 @@ module.exports = [
                 loader: 'postcss-loader',
                 options: {
                   config: {
-                    path: path.resolve(__dirname, './postcss.config.js'),
+                    path: path.resolve(__dirname, 'postcss.config.js'),
                   },
                 }
               }
@@ -65,6 +68,7 @@ module.exports = [
         allChunks: true,
       }),
       new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
+      new webpack.HotModuleReplacementPlugin(),
     ],
     optimization: {
       noEmitOnErrors: true
@@ -72,7 +76,9 @@ module.exports = [
   },
   {
     entry: {
-      server: './src/server/index.js'
+      server: [
+        './src/server/index.js'
+      ]
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -84,7 +90,7 @@ module.exports = [
       whitelist: [/\.(?!(?:jsx?|json)$).{1,5}$/i],
     }),],
     watch: true,
-    devtool: 'eval',
+    devtool: 'source-map',
     node: {
       __dirname: false
     },

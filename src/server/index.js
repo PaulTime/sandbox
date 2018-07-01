@@ -7,6 +7,16 @@ import { StaticRouter } from 'react-router-dom';
 
 import App from 'common/components/App';
 
+// if (module.hot) {
+//   module.hot.accept('./app', function() {
+//     console.log('🔁  HMR Reloading `./app`...');
+//   });
+//
+//   console.info('✅  Server-side HMR Enabled!');
+// } else {
+//   console.info('❌  Server-side HMR Not Supported.');
+// }
+
 const app = express();
 
 app.engine('html', mustacheExpress());
