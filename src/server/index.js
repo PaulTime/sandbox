@@ -28,6 +28,15 @@ if (IS_DEVELOP) {
   app.use(require("webpack-dev-middleware")(webpack(webpackConfig), {
     noInfo: false,
     // publicPath: webpackConfig.output.publicPath,
+    stats: {
+      assets: false,
+      colors: true,
+      version: false,
+      hash: false,
+      timings: false,
+      chunks: false,
+      chunkModules: false
+    }
   }));
 
   app.use(require('webpack-hot-middleware')(webpack(webpackConfig), {
