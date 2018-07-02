@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -68,7 +68,7 @@ module.exports = [
         allChunks: true,
       }),
       new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
-      new webpack.HotModuleReplacementPlugin(),
+      // new webpack.HotModuleReplacementPlugin(),
     ],
     optimization: {
       noEmitOnErrors: true

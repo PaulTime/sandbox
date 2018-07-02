@@ -1,6 +1,5 @@
 import React from 'react';
 import bemDecorator from 'cn-decorator';
-import { connect } from 'react-redux';
 
 import 'normalize.css/normalize.css';
 
@@ -10,7 +9,7 @@ import AppLayout from 'common/layouts/AppLayout';
 import './index.scss';
 
 @bemDecorator('app-root')
-export default class App extends React.PureComponent {
+export default class App extends React.Component {
   render(bem) {
     return (
       <section className={bem()}>
