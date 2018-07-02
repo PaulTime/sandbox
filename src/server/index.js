@@ -6,18 +6,10 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
+
+import { IS_DEVELOP } from 'common/config';
 import configStore from 'common/store';
 import App from 'common/components/App';
-
-// if (module.hot) {
-//   module.hot.accept('./app', function() {
-//     console.log('🔁  HMR Reloading `./app`...');
-//   });
-//
-//   console.info('✅  Server-side HMR Enabled!');
-// } else {
-//   console.info('❌  Server-side HMR Not Supported.');
-// }
 
 const app = express();
 
@@ -27,6 +19,26 @@ app.set('view engine', 'html');
 app.set('views', path.resolve(__dirname));
 
 app.use('/', express.static(path.resolve(__dirname)));
+
+/*eslint-disable*/
+if (IS_DEVELOP) {
+  const webpack = require('webpack');
+  const webpackConfig = require('../../webpack.dev.config.js');
+
+  app.use(require("webpack-dev-middleware")(webpack(webpackConfig), {
+    noInfo: false,
+    // publicPath: webpackConfig.output.publicPath,
+  }));
+
+  app.use(require('webpack-hot-middleware')(webpack(webpackConfig), {
+    log: console.log,
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000
+  }));
+
+  console.info('✅  Server-side HMR Enabled!');
+}
+/* eslint-enable */
 
 app.get('*', (req, res) => {
   const store = configStore();

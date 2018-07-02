@@ -1,5 +1,5 @@
 const path = require('path');
-// const webpack = require('webpack');
+const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -8,7 +8,11 @@ const NodemonPlugin = require( 'nodemon-webpack-plugin' );
 
 module.exports = [
   {
+    name: 'client',
+    target: 'web',
+
     entry: [
+      'webpack-hot-middleware/client?reload=true&name=client',
       './src/client/index.js'
     ],
     output: {
@@ -17,6 +21,7 @@ module.exports = [
     },
     watch: true,
     devtool: 'source-map',
+    mode: 'development',
     resolve: {
       modules: [
         'src',
@@ -68,11 +73,9 @@ module.exports = [
         allChunks: true,
       }),
       new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
-      // new webpack.HotModuleReplacementPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin()
     ],
-    optimization: {
-      noEmitOnErrors: true
-    }
   },
   {
     entry: {
@@ -91,6 +94,7 @@ module.exports = [
     }),],
     watch: true,
     devtool: 'source-map',
+    mode: 'development',
     node: {
       __dirname: false
     },
@@ -126,11 +130,9 @@ module.exports = [
     plugins: [
       new NodemonPlugin({
         watch: path.resolve(__dirname, 'dist', 'server.js'),
-        verbose: true
-      })
+        verbose: false
+      }),
+      new webpack.NoEmitOnErrorsPlugin()
     ],
-    optimization: {
-      noEmitOnErrors: true
-    }
   },
 ];
