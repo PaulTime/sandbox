@@ -65,7 +65,8 @@ app.get('*', (req, res) => {
   res.render('template', {
     page,
     preloadedState: JSON.stringify(preloadedState).replace(/</g, '\\u003c'),
-    bundlePath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/client.js'
+    bundlePath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/client.js',
+    stylesBundlePath: IS_DEVELOP ? 'http://localhost:9000/client.css' : '/client.css',
   });
 });
 
