@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "rimraf dist/* && cross-env NODE_ENV=development npm-run-all --parallel watch:client watch:server",
-    "watch:client": "webpack-dev-server --hot --inline --config ./webpack.dev.client.js",
+    "watch:client": "webpack-dev-server --config ./webpack.dev.client.js",
     "watch:server": "webpack --config ./webpack.dev.server.js",
     "eslint": "eslint 'src/**/*.js'"
   },

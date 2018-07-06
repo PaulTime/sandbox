@@ -13,17 +13,20 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
   },
+
   target: 'node',
+  node: {
+    __dirname: false
+  },
   externals: [nodeExternals({
     // load non-javascript files with extensions, presumably via loaders
     whitelist: [/\.(?!(?:jsx?|json)$).{1,5}$/i],
   }),],
+
   watch: true,
   devtool: 'source-map',
   mode: 'development',
-  node: {
-    __dirname: false
-  },
+
   resolve: {
     modules: [
       'src',

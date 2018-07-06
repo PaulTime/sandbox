@@ -6,7 +6,7 @@ export default class AppRoutes extends React.PureComponent {
   render() {
     return (
       <Switch>
-        <Route exact path="/" component={() => <h1>header 1</h1>}/>
+        <Route exact path="/" component={() => <h1>header asd</h1>}/>
         <Route exact path="/login" component={() =>
           <div>
             <h1>landing-credits</h1>

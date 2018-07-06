@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -13,6 +13,7 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: 'http://localhost:4004/',
     filename: 'client.js',
   },
 
@@ -21,8 +22,11 @@ module.exports = {
   mode: 'development',
 
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.resolve(__dirname, 'dist'),
+    publicPath: 'http://localhost:4004/',
     port: 9000,
+    host: 'localhost',
+    inline: true,
     hot: true
   },
 
