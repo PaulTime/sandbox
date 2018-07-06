@@ -16,38 +16,38 @@ const app = express();
 app.engine('html', mustacheExpress());
 
 app.set('view engine', 'html');
-app.set('views', path.resolve(__dirname));
+app.set('views', path.resolve(__dirname, '../views'));
 
-app.use('/', express.static(path.resolve(__dirname)));
+app.use('/static', express.static(path.resolve(__dirname, '../static')));
 
-/*eslint-disable*/
-if (IS_DEVELOP) {
-  const webpack = require('webpack');
-  const webpackConfig = require('../../webpack.dev.config.js');
-
-  app.use(require("webpack-dev-middleware")(webpack(webpackConfig), {
-    noInfo: false,
-    // publicPath: webpackConfig.output.publicPath,
-    stats: {
-      assets: false,
-      colors: true,
-      version: false,
-      hash: false,
-      timings: false,
-      chunks: false,
-      chunkModules: false
-    }
-  }));
-
-  app.use(require('webpack-hot-middleware')(webpack(webpackConfig), {
-    log: console.log,
-    path: '/__webpack_hmr',
-    heartbeat: 10 * 1000
-  }));
-
-  console.info('✅  Server-side HMR Enabled!');
-}
-/* eslint-enable */
+// /*eslint-disable*/
+// if (IS_DEVELOP) {
+//   const webpack = require('webpack');
+//   const webpackConfig = require('../../webpack.dev.config.js');
+//
+//   app.use(require("webpack-dev-middleware")(webpack(webpackConfig), {
+//     noInfo: false,
+//     // publicPath: webpackConfig.output.publicPath,
+//     stats: {
+//       assets: false,
+//       colors: true,
+//       version: false,
+//       hash: false,
+//       timings: false,
+//       chunks: false,
+//       chunkModules: false
+//     }
+//   }));
+//
+//   app.use(require('webpack-hot-middleware')(webpack(webpackConfig), {
+//     log: console.log,
+//     path: '/__webpack_hmr',
+//     heartbeat: 10 * 1000
+//   }));
+//
+//   console.info('✅  Server-side HMR Enabled!');
+// }
+// /* eslint-enable */
 
 app.get('*', (req, res) => {
   const store = configStore();
@@ -62,12 +62,13 @@ app.get('*', (req, res) => {
 
   const preloadedState = store.getState();
 
-  res.render('page', {
+  res.render('template', {
     page,
     preloadedState: JSON.stringify(preloadedState).replace(/</g, '\\u003c'),
+    bundlePath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/client.js'
   });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`listening on http://localhost:${process.env.PORT || 3000}`); // eslint-disable-line no-console
+app.listen(process.env.PORT || 4004, () => {
+  console.log(`listening on http://localhost:${process.env.PORT || 4004}`); // eslint-disable-line no-console
 });
