@@ -1,19 +1,15 @@
 import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
+import Login from 'common/containers/pages/Login';
+
 @withRouter
 export default class AppRoutes extends React.PureComponent {
   render() {
     return (
       <Switch>
         <Route exact path="/" component={() => <h1>header</h1>}/>
-        <Route exact path="/login" component={() =>
-          <div>
-            <h1>landing-credits</h1>
-            <img src="/static/img/googlelogo.png" alt="GoogleLogo"/>
-            <img src="/static/img/logo.svg" alt="logo"/>
-          </div>
-        }/>
+        <Route exact path="/login" component={Login} />
       </Switch>
     );
   }

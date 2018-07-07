@@ -4,7 +4,7 @@ import bemDecorator from 'cn-decorator';
 import 'normalize.css/normalize.css';
 
 import AppRoutes from 'common/routes';
-import AppLayout from 'common/layouts/AppLayout';
+import AppLayout from 'common/containers/layouts/AppLayout';
 
 import './index.scss';
 

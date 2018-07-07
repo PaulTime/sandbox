@@ -30,6 +30,12 @@ module.exports = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    },
+    proxy: {
+      '/static': {
+        target: 'http://localhost:4004/',
+        changeOrigin: true
+      }
     }
   },
 
@@ -63,15 +69,14 @@ module.exports = {
           ]
         })
       },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        exclude: /(\/fonts)/,
-        loader: 'file-loader',
-        options: {
-          name: '[path][name].[ext]',
-          context: 'src',
-        }
-      },
+      // {
+      //   test: /\.(png|jpg|gif|svg)$/,
+      //   exclude: /(\/fonts)/,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: '[path][name].[ext]',
+      //   }
+      // },
     ]
   },
   plugins: [

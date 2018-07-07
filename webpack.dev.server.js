@@ -44,16 +44,16 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: 'null-loader'
       },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        exclude: /(\/fonts)/,
-        loader: 'file-loader',
-        options: {
-          name: '[path][name].[ext]',
-          context: 'src',
-          emitFile: false,
-        }
-      },
+      // {
+      //   test: /\.(png|jpg|gif|svg)$/,
+      //   exclude: /(\/fonts)/,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: '[path][name].[ext]',
+      //     context: 'src',
+      //     emitFile: false,
+      //   }
+      // },
     ]
   },
   plugins: [

@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 @bemDecorator('app-layout')
 export default class AppLayout extends React.PureComponent {
   static propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
   };
 
   render (bem) {
