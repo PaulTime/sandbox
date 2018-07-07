@@ -14,9 +14,9 @@ import App from 'common/components/App';
 
 const app = express();
 
-if (IS_DEVELOP) {
-  app.use(cors({ origin: 'http://localhost:9000' }));
-}
+// if (IS_DEVELOP) {
+//   app.use(cors({ origin: 'http://localhost:9000' }));
+// }
 
 app.engine('html', mustacheExpress());
 

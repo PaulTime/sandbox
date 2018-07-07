@@ -1,8 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   name: 'client',
@@ -72,16 +70,10 @@ module.exports = {
     ]
   },
   plugins: [
-    // new HtmlWebpackPlugin({
-    //   filename: 'page.html',
-    //   template: 'src/server/template.html',
-    //   inject: false,
-    // }),
     new ExtractTextPlugin({
       filename: 'client.css',
       allChunks: true,
     }),
-    // new CopyWebpackPlugin([{ from: 'src/static', to: 'static' }]),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
