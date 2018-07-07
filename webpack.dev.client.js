@@ -13,7 +13,7 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: 'http://localhost:4004/',
+    publicPath: '/',
     filename: 'client.js',
   },
 
@@ -23,7 +23,7 @@ module.exports = {
 
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),
-    publicPath: 'http://localhost:4004/',
+    publicPath: '/',
     port: 9000,
     host: 'localhost',
     inline: true,

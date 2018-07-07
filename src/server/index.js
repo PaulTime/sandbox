@@ -1,6 +1,7 @@
 import React from 'react';
 import path from 'path';
 import express from 'express';
+import cors from 'cors';
 import mustacheExpress from 'mustache-express';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
@@ -13,41 +14,16 @@ import App from 'common/components/App';
 
 const app = express();
 
+if (IS_DEVELOP) {
+  app.use(cors({ origin: 'http://localhost:9000' }));
+}
+
 app.engine('html', mustacheExpress());
 
 app.set('view engine', 'html');
 app.set('views', path.resolve(__dirname, '../views'));
 
 app.use('/static', express.static(path.resolve(__dirname, '../static')));
-
-// /*eslint-disable*/
-// if (IS_DEVELOP) {
-//   const webpack = require('webpack');
-//   const webpackConfig = require('../../webpack.dev.config.js');
-//
-//   app.use(require("webpack-dev-middleware")(webpack(webpackConfig), {
-//     noInfo: false,
-//     // publicPath: webpackConfig.output.publicPath,
-//     stats: {
-//       assets: false,
-//       colors: true,
-//       version: false,
-//       hash: false,
-//       timings: false,
-//       chunks: false,
-//       chunkModules: false
-//     }
-//   }));
-//
-//   app.use(require('webpack-hot-middleware')(webpack(webpackConfig), {
-//     log: console.log,
-//     path: '/__webpack_hmr',
-//     heartbeat: 10 * 1000
-//   }));
-//
-//   console.info('✅  Server-side HMR Enabled!');
-// }
-// /* eslint-enable */
 
 app.get('*', (req, res) => {
   const store = configStore();
@@ -65,8 +41,8 @@ app.get('*', (req, res) => {
   res.render('template', {
     page,
     preloadedState: JSON.stringify(preloadedState).replace(/</g, '\\u003c'),
-    bundlePath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/client.js',
-    stylesBundlePath: IS_DEVELOP ? 'http://localhost:9000/client.css' : '/client.css',
+    jsPath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/client.js',
+    cssPath: IS_DEVELOP ? 'http://localhost:9000/client.css' : '/client.css',
   });
 });
 
