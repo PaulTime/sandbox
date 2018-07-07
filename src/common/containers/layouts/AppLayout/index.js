@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 @bemDecorator('app-layout')
 export default class AppLayout extends React.PureComponent {
   static propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
   };
 
   render (bem) {
@@ -15,7 +15,7 @@ export default class AppLayout extends React.PureComponent {
       <section className={bem()}>
         <aside className={bem('aside')}>
           <NavLink exact to="/">Home</NavLink>
-          <NavLink exact to="/landing-credits">landing-credits</NavLink>
+          <NavLink exact to="/login">login</NavLink>
         </aside>
 
         <div className={bem('pages-layout')}>

@@ -1,12 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
+import { IS_DEVELOP } from 'common/config';
+import configStore from 'common/store';
 import App from 'common/components/App';
 
-ReactDOM.hydrate(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+const preloadedState = window.__PRELOADED_STATE__;
+delete window.__PRELOADED_STATE__;
+
+const store = configStore(preloadedState);
+
+const hydrate = (Component) => {
+  ReactDOM.hydrate(
+    <Provider store={store}>
+      <BrowserRouter>
+        <Component />
+      </BrowserRouter>
+    </Provider>,
+    document.getElementById('root')
+  );
+};
+
+hydrate(App);
+
+if (IS_DEVELOP && module.hot) {
+  module.hot.accept('common/components/App', () => {
+    const NewApp = require('common/components/App').default; //eslint-disable-line
+    hydrate(NewApp);
+  });
+}
