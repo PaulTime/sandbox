@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Sandbox - beginning</title>
     <link rel="shortcut icon" href="/static/img/favicon.ico">
-    <link rel="stylesheet" href="{{cssPath}}">
+
+    {{#cssPath}}<link rel="stylesheet" href="{{.}}">{{/cssPath}}
 
     <script type="text/javascript">
         window.__PRELOADED_STATE__ = {{{preloadedState}}};

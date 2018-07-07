@@ -37,7 +37,7 @@ app.get('*', (req, res) => {
     page,
     preloadedState: JSON.stringify(preloadedState).replace(/</g, '\\u003c'),
     jsPath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/client.js',
-    cssPath: IS_DEVELOP ? 'http://localhost:9000/client.css' : '/client.css',
+    cssPath: IS_DEVELOP ? undefined : '/client.css',
   });
 });
 
