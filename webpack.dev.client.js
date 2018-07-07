@@ -1,14 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   name: 'client',
   target: 'web',
 
-  entry: [
-    './src/client/index.js'
-  ],
+  entry: './src/client/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: 'http://localhost:9000/',
@@ -54,36 +51,22 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            'css-loader',
-            {
-              loader: 'postcss-loader',
-              options: {
-                config: {
-                  path: path.resolve(__dirname, 'postcss.config.js'),
-                },
-              }
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: path.resolve(__dirname, 'postcss.config.js'),
+              },
             }
-          ]
-        })
+          }
+        ]
       },
-      // {
-      //   test: /\.(png|jpg|gif|svg)$/,
-      //   exclude: /(\/fonts)/,
-      //   loader: 'file-loader',
-      //   options: {
-      //     name: '[path][name].[ext]',
-      //   }
-      // },
     ]
   },
   plugins: [
-    new ExtractTextPlugin({
-      filename: 'client.css',
-      allChunks: true,
-    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],

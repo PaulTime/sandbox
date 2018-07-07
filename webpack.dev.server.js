@@ -5,9 +5,7 @@ const NodemonPlugin = require( 'nodemon-webpack-plugin' );
 
 module.exports = {
   entry: {
-    server: [
-      './src/server/index.js'
-    ]
+    server: './src/server/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -44,16 +42,6 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: 'null-loader'
       },
-      // {
-      //   test: /\.(png|jpg|gif|svg)$/,
-      //   exclude: /(\/fonts)/,
-      //   loader: 'file-loader',
-      //   options: {
-      //     name: '[path][name].[ext]',
-      //     context: 'src',
-      //     emitFile: false,
-      //   }
-      // },
     ]
   },
   plugins: [
