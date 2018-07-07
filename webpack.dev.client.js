@@ -11,7 +11,7 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath: 'http://localhost:9000/',
     filename: 'client.js',
   },
 
@@ -21,11 +21,16 @@ module.exports = {
 
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath: 'http://localhost:9000/',
     port: 9000,
     host: 'localhost',
     inline: true,
-    hot: true
+    hot: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    }
   },
 
   resolve: {

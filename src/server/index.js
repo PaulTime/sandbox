@@ -1,7 +1,6 @@
 import React from 'react';
 import path from 'path';
 import express from 'express';
-import cors from 'cors';
 import mustacheExpress from 'mustache-express';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
@@ -13,10 +12,6 @@ import configStore from 'common/store';
 import App from 'common/components/App';
 
 const app = express();
-
-// if (IS_DEVELOP) {
-//   app.use(cors({ origin: 'http://localhost:9000' }));
-// }
 
 app.engine('html', mustacheExpress());
 
