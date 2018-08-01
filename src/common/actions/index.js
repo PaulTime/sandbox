@@ -1,21 +1,9 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
-const initialState = {
-  message: null,
-};
-
-const appRoot = (state = initialState, action) => {
-  switch(action.type) {
-  case 'SET_MESSAGE':
-    return {
-      ...state,
-      message: action.message,
-    };
-  default:
-    return state;
-  }
-};
+import login from './login';
 
 export default combineReducers({
-  appRoot,
+  form: formReducer,
+  login,
 });

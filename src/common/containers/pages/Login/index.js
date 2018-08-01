@@ -1,18 +1,18 @@
 import React from 'react';
 import bemDecorator from 'cn-decorator';
 
+import LoginForm from 'common/containers/forms/Login';
+
 import './index.scss';
 
-@bemDecorator('login')
+@bemDecorator('login-page')
 export default class Login extends React.PureComponent {
   render(bem) {
     return (
       <div className={bem()}>
-        <h1>landing-credits</h1>
-        <img src="/static/img/googlelogo.png" alt="GoogleLogo"/>
-        <img src="/static/img/logo.svg" alt="logo"/>
-          
-        <div className={bem('test-div')} />
+        <h2>landing-credits</h2>
+
+        <LoginForm />
       </div>
     );
   }

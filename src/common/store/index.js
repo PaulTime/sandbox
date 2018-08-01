@@ -8,12 +8,22 @@ const composeEnhancers =
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
       : compose;
 
-export default (preloadedState = {}) => (
-  createStore(
+export default (preloadedState = {}) => {
+  const store = createStore(
     reducers,
     preloadedState,
     composeEnhancers(
       applyMiddleware(thunk)
     )
-  )
-);
+  );
+
+  if(module.hot) {
+    module.hot.accept('common/actions', () => {
+      const nextReducer = require('common/actions').default;
+
+      store.replaceReducer(nextReducer);
+    });
+  }
+
+  return store;
+};
