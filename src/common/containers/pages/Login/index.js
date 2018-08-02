@@ -10,7 +10,7 @@ export default class Login extends React.PureComponent {
   render(bem) {
     return (
       <div className={bem()}>
-        <h2>landing-credits</h2>
+        <h2>Login form</h2>
 
         <LoginForm />
       </div>

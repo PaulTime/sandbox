@@ -1,6 +1,7 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
+import { IS_DEVELOP } from 'common/config';
 import reducers from 'common/actions';
 
 const composeEnhancers =
@@ -17,7 +18,7 @@ export default (preloadedState = {}) => {
     )
   );
 
-  if(module.hot) {
+  if(IS_DEVELOP && module.hot) {
     module.hot.accept('common/actions', () => {
       const nextReducer = require('common/actions').default;
 
