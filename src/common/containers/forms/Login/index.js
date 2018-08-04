@@ -23,11 +23,15 @@ export default class LoginForm extends React.PureComponent {
         onSubmit={handleSubmit}
         className={bem()}
       >
-        <Field
-          name="username"
-          component="input"
-          validate={[required()]}
-        />
+        <div className={bem('field-wrap')}>
+          <Field
+            name="username"
+            component="input"
+            validate={[required()]}
+          />
+        </div>
+
+        <button>log in</button>
       </Form>
     );
   }

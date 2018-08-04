@@ -4,12 +4,14 @@ const nodeExternals = require('webpack-node-externals');
 const NodemonPlugin = require( 'nodemon-webpack-plugin' );
 
 module.exports = {
-  entry: {
-    server: './src/server/index.js',
-  },
+  name: 'server',
+  entry: [
+    'babel-polyfill',
+    './src/server/index.js',
+  ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
+    filename: 'server.js',
   },
 
   target: 'node',

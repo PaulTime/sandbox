@@ -8,6 +8,7 @@
     "eslint": "eslint 'src/**/*.js'"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "express": "^4.16.2",
     "fetch-polyfill": "^0.8.2",
     "normalize.css": "^8.0.0",

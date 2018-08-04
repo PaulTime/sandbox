@@ -5,7 +5,10 @@ module.exports = {
   name: 'client',
   target: 'web',
 
-  entry: './src/client/index.js',
+  entry: [
+    'babel-polyfill',
+    './src/client/index.js',
+  ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: 'http://localhost:9000/',

@@ -1,0 +1,14 @@
+.registration-form {
+  &__field-wrap {
+    margin-bottom: 10px;
+  }
+
+  &__label {
+    display: flex;
+    flex-flow: column;
+  }
+
+  &__submit {
+    width: 100%;
+  }
+}
