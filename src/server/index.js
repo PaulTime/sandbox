@@ -6,7 +6,6 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-
 import { IS_DEVELOP } from 'common/config';
 import configStore from 'common/store';
 import App from 'common/components/App';

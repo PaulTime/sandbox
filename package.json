@@ -1,5 +1,5 @@
 {
-  "name": "TAS24Landing",
+  "name": "sandbox",
   "version": "1.0.0",
   "scripts": {
     "dev": "rimraf dist/* && cross-env NODE_ENV=development npm-run-all --parallel watch:client watch:server",
@@ -8,7 +8,9 @@
     "eslint": "eslint 'src/**/*.js'"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "express": "^4.16.2",
+    "fetch-polyfill": "^0.8.2",
     "normalize.css": "^8.0.0",
     "postcss-nested": "^3.0.0",
     "postcss-scss": "^1.0.6",
@@ -16,6 +18,9 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "redux-actions": "^2.6.1",
+    "redux-form": "^7.4.2",
+    "redux-form-validators": "^2.7.2",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {

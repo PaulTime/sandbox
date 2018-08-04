@@ -1,19 +1,31 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import bemDecorator from 'cn-decorator';
+
+import LoginForm from 'common/containers/forms/Login';
+import { fetchLoginRequest } from 'common/redux/login';
 
 import './index.scss';
 
-@bemDecorator('login')
-export default class Login extends React.PureComponent {
-  render(bem) {
-    return (
-      <div className={bem()}>
-        <h1>landing-credits</h1>
-        <img src="/static/img/googlelogo.png" alt="GoogleLogo"/>
-        <img src="/static/img/logo.svg" alt="logo"/>
-          
-        <div className={bem('test-div')} />
-      </div>
-    );
-  }
+@connect(null, { fetchLoginRequest })
+@bemDecorator('login-page')
+export default class LoginPage extends React.PureComponent {
+    static propTypes = {
+      fetchLoginRequest: PropTypes.func,
+    };
+
+    static defaultProps = {
+      fetchLoginRequest: () => {},
+    };
+
+    render(bem) {
+      return (
+        <div className={bem()}>
+          <h2 className={bem('title')}>Login form</h2>
+
+          <LoginForm onSubmit={() => this.props.fetchLoginRequest()} />
+        </div>
+      );
+    }
 }
