@@ -1,12 +1,15 @@
-export const fetchSignupRequest = () => async ({ username, phone, email, password }) => {
+export const fetchSignupRequest = ({ username, phone, email, password }) => async () => {
   return await window.fetch('/auth-service/registration', {
     method: 'POST',
     credentials: 'include',
-    body: {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       username,
       phone,
       email,
       password,
-    }
+    })
   });
 };
