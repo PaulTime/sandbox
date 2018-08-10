@@ -1,4 +1,5 @@
 import { createStore, compose, applyMiddleware } from 'redux';
+import { apiMiddleware } from 'redux-api-middleware';
 import thunk from 'redux-thunk';
 
 import { IS_DEVELOP } from 'common/config';
@@ -14,7 +15,10 @@ export default (preloadedState = {}) => {
     reducers,
     preloadedState,
     composeEnhancers(
-      applyMiddleware(thunk)
+      applyMiddleware(
+        apiMiddleware,
+        thunk,
+      )
     )
   );
 

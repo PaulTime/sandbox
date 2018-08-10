@@ -1,15 +1,17 @@
-export const fetchSignupRequest = ({ username, phone, email, password }) => async () => {
-  return await window.fetch('/auth-service/registration', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      username,
-      phone,
-      email,
-      password,
-    })
-  });
+import fetchAPI from './api';
+
+export const fetchSignupRequest = ({ username, phone, email, password }) => async (dispatch) => {
+  return await dispatch(fetchSignupData({
+    username,
+    phone,
+    email,
+    password,
+  }));
 };
+
+const fetchSignupData = body => fetchAPI({
+  endpoint: '/auth-service/registration',
+  method: 'POST',
+  type: 'REGISTRATION',
+  body,
+});
