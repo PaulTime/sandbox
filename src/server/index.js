@@ -1,23 +1,34 @@
 import React from 'react';
 import path from 'path';
 import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 import mustacheExpress from 'mustache-express';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { IS_DEVELOP } from 'common/config';
+import { IS_DEVELOP, DB_HOST } from 'common/config';
 import configStore from 'common/store';
 import App from 'common/components/App';
+import auth from 'server/routes/auth.js';
 
 const app = express();
 
-app.engine('html', mustacheExpress());
+mongoose.connect(DB_HOST, { useNewUrlParser: true });
+mongoose.Promise = global.Promise;
 
-app.set('view engine', 'html');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.engine('mustache', mustacheExpress());
+
+app.set('view engine', 'mustache');
 app.set('views', path.resolve(__dirname, '../views'));
 
 app.use('/static', express.static(path.resolve(__dirname, '../static')));
+
+app.use('/auth-service', auth);
 
 app.get('*', (req, res) => {
   const store = configStore();
