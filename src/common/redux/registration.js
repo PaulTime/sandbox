@@ -10,7 +10,7 @@ export const fetchSignupRequest = ({ username, phone, email, password }) => asyn
 };
 
 const fetchSignupData = body => fetchAPI({
-  endpoint: '/auth-service/add-user',
+  endpoint: '/api/auth-service/register',
   method: 'POST',
   type: 'REGISTRATION',
   body,

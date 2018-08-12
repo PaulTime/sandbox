@@ -90,7 +90,7 @@ export default class RegistrationForm extends React.PureComponent {
         </div>
 
         <button disabled={submitting} className={bem('submit')}>
-          {submitting ? 'Sending...' : 'Sign un'}
+          {submitting ? 'Sending...' : 'Sign up'}
         </button>
       </Form>
     );

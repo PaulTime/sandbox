@@ -10,6 +10,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "fetch-polyfill": "^0.8.2",
     "mongoose": "^5.2.7",
