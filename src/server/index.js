@@ -30,6 +30,8 @@ app.set('views', path.resolve(__dirname, '../views'));
 
 app.use('/static', express.static(path.resolve(__dirname, '../static')));
 
+app.disable('x-powered-by');
+
 app.use('/api', routes);
 
 app.get('*', (req, res) => {
