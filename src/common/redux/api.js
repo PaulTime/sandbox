@@ -1,4 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
+import { setAuthorized } from 'common/actions/user';
+
 
 export default ({ type, ...config }) => (dispatch) => {
   const result = { ...config };
@@ -34,5 +36,11 @@ export default ({ type, ...config }) => (dispatch) => {
       ...result,
       credentials: 'include',
     },
+  }).then(response => {
+    if (response.status === 401) {
+      dispatch(setAuthorized(false));
+    }
+
+    return response;
   });
 };
