@@ -1,5 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
-import { setAuthorized } from 'common/actions/user';
+import { setAuthorized } from 'common/actions/auth';
 
 
 export default ({ type, ...config }) => (dispatch) => {

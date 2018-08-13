@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import bemDecorator from 'cn-decorator';
 
 import RegistrationForm from 'common/containers/forms/Registration';
-import { fetchSignupRequest } from 'common/redux/registration';
+import { fetchSignupRequest } from 'common/redux/auth';
 
 import './index.scss';
 

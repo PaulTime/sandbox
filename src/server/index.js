@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import mustacheExpress from 'mustache-express';
 import cookieParser from 'cookie-parser';
+import CookieDough from 'cookie-dough';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -35,7 +36,7 @@ app.disable('x-powered-by');
 app.use('/api', routes);
 
 app.get('*', (req, res) => {
-  const store = configStore();
+  const store = configStore({ cookie: new CookieDough(req) });
 
   const page = renderToString(
     <Provider store={store}>

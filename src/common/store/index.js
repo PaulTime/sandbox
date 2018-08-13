@@ -4,20 +4,21 @@ import thunk from 'redux-thunk';
 
 import { IS_DEVELOP } from 'common/config';
 import reducers from 'common/actions';
+import { setTokensToStore } from 'common/redux/auth';
 
 const composeEnhancers =
     typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
       : compose;
 
-export default (preloadedState = {}) => {
+export default ({ preloadedState = {}, cookie }) => {
   const store = createStore(
     reducers,
     preloadedState,
     composeEnhancers(
       applyMiddleware(
         apiMiddleware,
-        thunk,
+        thunk.withExtraArgument({ cookie }),
       )
     )
   );
@@ -29,6 +30,8 @@ export default (preloadedState = {}) => {
       store.replaceReducer(nextReducer);
     });
   }
+
+  store.dispatch(setTokensToStore());
 
   return store;
 };
