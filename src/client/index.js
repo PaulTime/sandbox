@@ -15,6 +15,10 @@ delete window.__PRELOADED_STATE__;
 
 let store;
 
+// TODO add PrivateLayout
+// TODO add login
+// TODO add refresh
+
 const hydrate = async (Component) => {
   store = store || await configStore({ preloadedState, cookie: CookieDough() });
 

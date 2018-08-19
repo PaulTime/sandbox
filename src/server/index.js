@@ -30,6 +30,10 @@ app.use('/static', express.static(path.resolve(__dirname, '../static')));
 
 app.disable('x-powered-by');
 
+// TODO redis store authorized users
+// TODO login route
+// TODO refresh
+// TODO add auth middleware for private routes
 app.use('/api', routes);
 
 app.get('*', async (req, res) => {

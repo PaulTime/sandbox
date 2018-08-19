@@ -25,7 +25,6 @@ export const addUser = async (request, response) => {
     const user = new User({ ...body, password: bcrypt.hashSync(body.password, 10) });
     await user.save();
 
-    // redis store authorized users
     const accessToken = crypto.randomBytes(256).toString('base64');
     const refreshToken = crypto.randomBytes(256).toString('base64');
 
