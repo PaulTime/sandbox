@@ -2,7 +2,7 @@
   "name": "sandbox",
   "version": "1.0.0",
   "scripts": {
-    "dev": "rimraf dist/* && cross-env NODE_ENV=development npm-run-all --parallel watch:client watch:server",
+    "dev": "rm -rf dist/* && NODE_ENV=development npm-run-all --parallel watch:client watch:server",
     "watch:client": "webpack-dev-server --config ./webpack.dev.client.js",
     "watch:server": "webpack --config ./webpack.dev.server.js",
     "eslint": "eslint 'src/**/*.js'"
@@ -21,6 +21,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
+    "redis": "^2.8.0",
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
     "redux-api-middleware": "^2.3.0",
@@ -41,7 +42,6 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "cn-decorator": "^2.1.0",
-    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "eslint": "^5.0.1",
     "eslint-plugin-react": "^7.10.0",
@@ -54,7 +54,6 @@
     "prop-types": "^15.6.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "rimraf": "^2.6.2",
     "style-loader": "^0.21.0",
     "webpack": "^4.1.0",
     "webpack-cli": "^2.0.10",
