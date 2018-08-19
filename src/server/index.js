@@ -10,15 +10,12 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { IS_DEVELOP, DB_HOST, PORT } from 'common/config';
+import { IS_DEVELOP, MONGO_DB_HOST, PORT } from 'common/config';
 import configStore from 'common/store';
 import App from 'common/components/App';
 import routes from 'server/routes';
 
 const app = express();
-
-mongoose.connect(DB_HOST, { useNewUrlParser: true });
-mongoose.Promise = global.Promise;
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,8 +32,8 @@ app.disable('x-powered-by');
 
 app.use('/api', routes);
 
-app.get('*', (req, res) => {
-  const store = configStore({ cookie: new CookieDough(req) });
+app.get('*', async (req, res) => {
+  const store = await configStore({ cookie: new CookieDough(req) });
 
   const page = renderToString(
     <Provider store={store}>
@@ -56,6 +53,11 @@ app.get('*', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`listening on http://localhost:${PORT}`); // eslint-disable-line no-console
-});
+(async () => {
+  mongoose.Promise = global.Promise;
+  await mongoose.connect(MONGO_DB_HOST, { useNewUrlParser: true });
+
+  app.listen(PORT, () => {
+    console.log(`listening on http://localhost:${PORT}`); // eslint-disable-line no-console
+  });
+})();

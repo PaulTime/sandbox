@@ -4,14 +4,14 @@ import thunk from 'redux-thunk';
 
 import { IS_DEVELOP } from 'common/config';
 import reducers from 'common/actions';
-import { setTokensToStore } from 'common/redux/auth';
+import { setAuthDataToStore } from 'common/redux/auth';
 
 const composeEnhancers =
     typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
       : compose;
 
-export default ({ preloadedState = {}, cookie }) => {
+export default async ({ preloadedState = {}, cookie }) => {
   const store = createStore(
     reducers,
     preloadedState,
@@ -31,7 +31,7 @@ export default ({ preloadedState = {}, cookie }) => {
     });
   }
 
-  store.dispatch(setTokensToStore());
+  await store.dispatch(setAuthDataToStore());
 
   return store;
 };

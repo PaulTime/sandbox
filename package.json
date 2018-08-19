@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
     "cookie-dough": "^0.1.0",
     "cookie-parser": "^1.4.3",

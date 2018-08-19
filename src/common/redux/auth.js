@@ -1,25 +1,34 @@
-import { AUTH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME } from 'common/config';
-import { setAuthToken, setRefreshToken } from 'common/actions/auth';
+import { ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from 'common/config';
+import { setAuthToken, setRefreshToken, setAuthorized } from 'common/actions/auth';
 
 import fetchAPI from './api';
 
-export const setTokensToStore = () => (dispatch, getState, { cookie }) => {
-  dispatch(setAuthToken(
-    cookie.get(AUTH_TOKEN_COOKIE_NAME)
+export const setAuthDataToStore = () => async (dispatch, getState, { cookie }) => {
+  const accessToken = cookie.get(ACCESS_TOKEN_NAME);
+  const refreshToken = cookie.get(REFRESH_TOKEN_NAME);
+
+  await dispatch(setAuthToken(
+    cookie.get(ACCESS_TOKEN_NAME)
   ));
 
-  dispatch(setRefreshToken(
-    cookie.get(REFRESH_TOKEN_COOKIE_NAME)
+  await dispatch(setRefreshToken(
+    cookie.get(REFRESH_TOKEN_NAME)
   ));
+
+  if (accessToken && refreshToken) {
+    await dispatch(setAuthorized(true));
+  }
 };
 
 export const fetchSignupRequest = ({ username, phone, email, password }) => async (dispatch) => {
-  return await dispatch(fetchSignupData({
+  await dispatch(fetchSignupData({
     username,
     phone,
     email,
     password,
   }));
+
+  await dispatch(setAuthDataToStore());
 };
 
 const fetchSignupData = body => fetchAPI({

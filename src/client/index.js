@@ -13,9 +13,11 @@ import App from 'common/components/App';
 const preloadedState = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
 
-const store = configStore({ preloadedState, cookie: CookieDough() });
+let store;
 
-const hydrate = (Component) => {
+const hydrate = async (Component) => {
+  store = store || await configStore({ preloadedState, cookie: CookieDough() });
+
   ReactDOM.hydrate(
     <Provider store={store}>
       <BrowserRouter>
