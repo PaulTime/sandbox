@@ -17,21 +17,17 @@ export const setAuthDataToStore = () => async (dispatch, getState, { cookie }) =
     cookie.get(REFRESH_TOKEN_NAME)
   ));
 
-  if (accessToken && refreshToken) {
+  if (accessToken || refreshToken) {
     await dispatch(setAuthorized(true));
   }
 };
 
 export const fetchSignupRequest = data => async (dispatch) => {
-  try {
-    await dispatch(fetchSignupData(data));
+  await dispatch(fetchSignupData(data));
 
-    await dispatch(setAuthDataToStore());
+  await dispatch(setAuthDataToStore());
 
-    await dispatch(push('/media'));
-  } catch (e) {
-    console.error(e); // eslint-disable-line no-console
-  }
+  await dispatch(push('/media'));
 };
 
 const fetchSignupData = body => fetchAPI({
