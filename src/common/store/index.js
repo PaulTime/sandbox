@@ -1,5 +1,6 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import { apiMiddleware } from 'redux-api-middleware';
+import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 
 import { IS_DEVELOP } from 'common/config';
@@ -11,13 +12,14 @@ const composeEnhancers =
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
       : compose;
 
-export default async ({ preloadedState = {}, cookie }) => {
+export default async ({ preloadedState = {}, cookie, history }) => {
   const store = createStore(
     reducers,
     preloadedState,
     composeEnhancers(
       applyMiddleware(
         apiMiddleware,
+        routerMiddleware(history),
         thunk.withExtraArgument({ cookie }),
       )
     )

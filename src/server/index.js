@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import CookieDough from 'cookie-dough';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import createMemoryHistory from 'history/createMemoryHistory';
 import { Provider } from 'react-redux';
 
 import { IS_DEVELOP, MONGO_DB_HOST, PORT } from 'common/config';
@@ -37,7 +38,7 @@ app.disable('x-powered-by');
 app.use('/api', routes);
 
 app.get('*', async (req, res) => {
-  const store = await configStore({ cookie: new CookieDough(req) });
+  const store = await configStore({ cookie: new CookieDough(req), history: createMemoryHistory() });
 
   const page = renderToString(
     <Provider store={store}>
@@ -58,10 +59,14 @@ app.get('*', async (req, res) => {
 });
 
 (async () => {
-  mongoose.Promise = global.Promise;
-  await mongoose.connect(MONGO_DB_HOST, { useNewUrlParser: true });
+  try {
+    mongoose.Promise = global.Promise;
+    await mongoose.connect(MONGO_DB_HOST, { useNewUrlParser: true });
 
-  app.listen(PORT, () => {
-    console.log(`listening on http://localhost:${PORT}`); // eslint-disable-line no-console
-  });
+    app.listen(PORT, () => {
+      console.log(`listening on http://localhost:${PORT}`); // eslint-disable-line no-console
+    });
+  } catch (error) {
+    console.error(error); // eslint-disable-line no-console
+  }
 })();

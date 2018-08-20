@@ -1,3 +1,5 @@
+import { push } from 'react-router-redux';
+
 import { ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from 'common/config';
 import { setAuthToken, setRefreshToken, setAuthorized } from 'common/actions/auth';
 
@@ -20,15 +22,16 @@ export const setAuthDataToStore = () => async (dispatch, getState, { cookie }) =
   }
 };
 
-export const fetchSignupRequest = ({ username, phone, email, password }) => async (dispatch) => {
-  await dispatch(fetchSignupData({
-    username,
-    phone,
-    email,
-    password,
-  }));
+export const fetchSignupRequest = data => async (dispatch) => {
+  try {
+    await dispatch(fetchSignupData(data));
 
-  await dispatch(setAuthDataToStore());
+    await dispatch(setAuthDataToStore());
+
+    await dispatch(push('/media'));
+  } catch (e) {
+    console.error(e); // eslint-disable-line no-console
+  }
 };
 
 const fetchSignupData = body => fetchAPI({
