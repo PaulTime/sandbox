@@ -12,6 +12,7 @@ import createMemoryHistory from 'history/createMemoryHistory';
 import { Provider } from 'react-redux';
 
 import { IS_DEVELOP, MONGO_DB_HOST, PORT } from 'common/config';
+import redis from 'server/services/redis';
 import configStore from 'common/store';
 import App from 'common/components/App';
 import routes from 'server/routes';
@@ -62,6 +63,8 @@ app.get('*', async (req, res) => {
   try {
     mongoose.Promise = global.Promise;
     await mongoose.connect(MONGO_DB_HOST, { useNewUrlParser: true });
+
+    await redis.client.connect();
 
     app.listen(PORT, () => {
       console.log(`listening on http://localhost:${PORT}`); // eslint-disable-line no-console

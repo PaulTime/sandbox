@@ -17,7 +17,6 @@ delete window.__PRELOADED_STATE__;
 let store;
 const routerHistory = createBrowserHistory();
 
-// TODO add PrivateLayout
 // TODO add login
 // TODO add refresh
 
