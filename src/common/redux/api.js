@@ -1,4 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
+import { SubmissionError } from 'redux-form';
+
 import { setAuthorized } from 'common/actions/auth';
 
 
@@ -39,6 +41,10 @@ export default ({ type, ...config }) => (dispatch) => {
   }).then(response => {
     if (response.status === 401) {
       dispatch(setAuthorized(false));
+    }
+
+    if (response.error) {
+      throw new SubmissionError(response.payload.response);
     }
 
     return response;

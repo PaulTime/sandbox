@@ -9,13 +9,8 @@ export const setAuthDataToStore = () => async (dispatch, getState, { cookie }) =
   const accessToken = cookie.get(ACCESS_TOKEN_NAME);
   const refreshToken = cookie.get(REFRESH_TOKEN_NAME);
 
-  await dispatch(setAuthToken(
-    cookie.get(ACCESS_TOKEN_NAME)
-  ));
-
-  await dispatch(setRefreshToken(
-    cookie.get(REFRESH_TOKEN_NAME)
-  ));
+  await dispatch(setAuthToken(accessToken));
+  await dispatch(setRefreshToken(refreshToken));
 
   if (accessToken || refreshToken) {
     await dispatch(setAuthorized(true));
@@ -23,7 +18,11 @@ export const setAuthDataToStore = () => async (dispatch, getState, { cookie }) =
 };
 
 export const fetchSignupRequest = data => async (dispatch) => {
-  await dispatch(fetchSignupData(data));
+  const response = await dispatch(fetchSignupData(data));
+
+  if (response.error) {
+    return;
+  }
 
   await dispatch(setAuthDataToStore());
 
