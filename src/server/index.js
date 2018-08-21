@@ -59,6 +59,7 @@ app.get('*', async (req, res) => {
   });
 });
 
+/* eslint-disable no-console */
 (async () => {
   try {
     mongoose.Promise = global.Promise;
@@ -67,9 +68,9 @@ app.get('*', async (req, res) => {
     await redis.client.connect();
 
     app.listen(PORT, () => {
-      console.log(`listening on http://localhost:${PORT}`); // eslint-disable-line no-console
+      console.log(`listening on http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error(error); // eslint-disable-line no-console
+    console.error(error);
   }
 })();
