@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import CookieDough from 'cookie-dough';
+import createBrowserHistory from 'history/createBrowserHistory';
+import { ConnectedRouter } from 'react-router-redux';
 
 import 'fetch-polyfill';
 
@@ -12,14 +14,19 @@ import App from 'common/components/App';
 const preloadedState = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
 
-const store = configStore(preloadedState);
+let store;
+const routerHistory = createBrowserHistory();
 
-const hydrate = (Component) => {
+// TODO add login
+// TODO add refresh
+const hydrate = async (Component) => {
+  store = store || await configStore({ preloadedState, cookie: CookieDough(), history: routerHistory });
+
   ReactDOM.hydrate(
     <Provider store={store}>
-      <BrowserRouter>
+      <ConnectedRouter history={routerHistory}>
         <Component />
-      </BrowserRouter>
+      </ConnectedRouter>
     </Provider>,
     document.getElementById('root')
   );

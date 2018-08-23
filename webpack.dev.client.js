@@ -25,7 +25,7 @@ module.exports = {
     port: 9000,
     host: 'localhost',
     inline: true,
-    hot: true,
+    hotOnly: true,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
