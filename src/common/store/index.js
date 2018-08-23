@@ -3,7 +3,7 @@ import { apiMiddleware } from 'redux-api-middleware';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 
-import { IS_DEVELOP } from 'common/config';
+import { IS_DEVELOP, ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from 'common/config';
 import reducers from 'common/actions';
 import { setAuthDataToStore } from 'common/redux/auth';
 
@@ -12,7 +12,7 @@ const composeEnhancers =
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
       : compose;
 
-export default async ({ preloadedState = {}, cookie, history }) => {
+export default async ({ preloadedState = {}, cookie, history }, server = false) => {
   const store = createStore(
     reducers,
     preloadedState,
@@ -33,7 +33,12 @@ export default async ({ preloadedState = {}, cookie, history }) => {
     });
   }
 
-  await store.dispatch(setAuthDataToStore());
+  if (server) {
+    await store.dispatch(setAuthDataToStore({
+      accessToken: cookie.get(ACCESS_TOKEN_NAME),
+      refreshToken: cookie.get(REFRESH_TOKEN_NAME),
+    }));
+  }
 
   return store;
 };

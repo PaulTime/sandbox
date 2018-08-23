@@ -19,7 +19,6 @@ const routerHistory = createBrowserHistory();
 
 // TODO add login
 // TODO add refresh
-
 const hydrate = async (Component) => {
   store = store || await configStore({ preloadedState, cookie: CookieDough(), history: routerHistory });
 

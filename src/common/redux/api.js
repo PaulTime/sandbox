@@ -38,12 +38,14 @@ export default ({ type, ...config }) => (dispatch) => {
       ...result,
       credentials: 'include',
     },
-  }).then(response => {
-    if (response.status === 401) {
-      dispatch(setAuthorized(false));
+  }).then(async response => {
+    const { status: statusCode } = response.payload || {};
+    if (statusCode === 401) {
+      await dispatch(setAuthorized(false));
+      return response;
     }
 
-    if (response.error) {
+    if (statusCode === 400 && response.error) {
       throw new SubmissionError(response.payload.response);
     }
 

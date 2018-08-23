@@ -1,6 +1,3 @@
-import crypto from 'crypto';
-import bcrypt from 'bcrypt';
-
 import {
   ACCESS_TOKEN_NAME,
   REFRESH_TOKEN_NAME,
@@ -9,6 +6,7 @@ import {
 } from 'common/config';
 import User from 'server/models/user';
 import redis from 'server/services/redis';
+import { encryptPassword, generateRandomToken } from 'server/helpers';
 
 export const addUser = async (request, response) => {
   try {
@@ -22,19 +20,20 @@ export const addUser = async (request, response) => {
       return;
     }
 
-    const document = { ...body, password: bcrypt.hashSync(body.password, 10) };
+    const document = { ...body, password: encryptPassword(body.password) };
     await User.create(document);
 
-    const accessToken = crypto.randomBytes(256).toString('base64');
-    const refreshToken = crypto.randomBytes(256).toString('base64');
+    const accessToken = generateRandomToken();
+    const refreshToken = generateRandomToken();
 
-    await redis.client.hmset(accessToken, document);
-    await redis.client.pexpire(accessToken, ACCESS_TOKEN_AGE);
+    await redis.client.hmset(accessToken, { ...document, refreshToken });
+    await redis.client.pexpire(accessToken, REFRESH_TOKEN_AGE);
 
     response
-      .cookie(ACCESS_TOKEN_NAME, accessToken, { maxAge: ACCESS_TOKEN_AGE })
-      .cookie(REFRESH_TOKEN_NAME, refreshToken, { maxAge: REFRESH_TOKEN_AGE })
-      .sendStatus(200);
+      .cookie(ACCESS_TOKEN_NAME, accessToken, { httpOnly: true, maxAge: ACCESS_TOKEN_AGE })
+      .cookie(REFRESH_TOKEN_NAME, refreshToken, { httpOnly: true, maxAge: REFRESH_TOKEN_AGE })
+      .status(200)
+      .json({ accessToken, refreshToken });
   } catch (error) {
     response
       .status(500)

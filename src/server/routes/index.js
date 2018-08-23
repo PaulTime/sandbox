@@ -9,4 +9,8 @@ router.use(sessionMiddleware);
 
 router.post('/auth-service/register', addUser);
 
+router.get('/test-service/test', (request, response) => {
+  response.sendStatus(200);
+});
+
 export default router;

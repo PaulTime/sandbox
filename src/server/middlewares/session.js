@@ -15,12 +15,12 @@ export default async (request, response, next) => {
 
   const cookie = new CookieDough(request);
   const userAccessToken = cookie.get(ACCESS_TOKEN_NAME);
-  const userIsAuthorized = await redis.client.exists(userAccessToken);
+  const userHasSession = await redis.client.exists(userAccessToken);
 
-  if (userIsAuthorized) {
+  if (userAccessToken && userHasSession) {
     next();
     return;
   }
 
   response.sendStatus(401);
-}
+};

@@ -37,7 +37,7 @@ app.disable('x-powered-by');
 app.use('/api', routes);
 
 app.get('*', async (request, response) => {
-  const store = await configStore({ cookie: new CookieDough(request), history: createMemoryHistory() });
+  const store = await configStore({ cookie: new CookieDough(request), history: createMemoryHistory() }, true);
 
   const page = renderToString(
     <Provider store={store}>
