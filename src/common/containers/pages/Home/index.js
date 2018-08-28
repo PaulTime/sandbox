@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import bemDecorator from 'cn-decorator';
 import { withRouter } from 'react-router-dom';
@@ -17,6 +18,16 @@ import fetchAPI from 'common/redux/api';
 }))
 @bemDecorator('home-page')
 export default class Home extends React.PureComponent {
+  static propTypes = {
+    location: PropTypes.object,
+    testAPI: PropTypes.func,
+  };
+
+  static defaultProps = {
+    location: undefined,
+    testAPI: undefined,
+  };
+
   componentDidMount() {
     const { location, testAPI } = this.props;
 
