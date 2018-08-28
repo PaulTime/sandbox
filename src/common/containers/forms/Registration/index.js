@@ -15,7 +15,7 @@ export default class RegistrationForm extends React.PureComponent {
   };
 
   static defaultProps = {
-    handleSubmit: () => {},
+    handleSubmit: undefined,
     submitting: undefined,
   };
 
@@ -27,7 +27,7 @@ export default class RegistrationForm extends React.PureComponent {
         onSubmit={handleSubmit}
         className={bem()}
       >
-        <div className={bem('field-wrap')}>
+        <div className={bem('field')}>
           <label className={bem('label')}>
             Username
 
@@ -40,7 +40,7 @@ export default class RegistrationForm extends React.PureComponent {
           </label>
         </div>
 
-        <div className={bem('field-wrap')}>
+        <div className={bem('field')}>
           <label className={bem('label')}>
             Mobile phone
 
@@ -57,7 +57,7 @@ export default class RegistrationForm extends React.PureComponent {
           </label>
         </div>
 
-        <div className={bem('field-wrap')}>
+        <div className={bem('field')}>
           <label className={bem('label')}>
             E-mail
 
@@ -73,7 +73,7 @@ export default class RegistrationForm extends React.PureComponent {
           </label>
         </div>
 
-        <div className={bem('field-wrap')}>
+        <div className={bem('field')}>
           <label className={bem('label')}>
             Password
 

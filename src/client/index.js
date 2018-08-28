@@ -15,16 +15,16 @@ const preloadedState = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
 
 let store;
-const routerHistory = createBrowserHistory();
+const history = createBrowserHistory();
 
-// TODO add login
 // TODO add refresh
+// TODO add guest layout for authorized users
 const hydrate = async (Component) => {
-  store = store || await configStore({ preloadedState, cookie: CookieDough(), history: routerHistory });
+  store = store || await configStore({ preloadedState, cookie: CookieDough(), history });
 
   ReactDOM.hydrate(
     <Provider store={store}>
-      <ConnectedRouter history={routerHistory}>
+      <ConnectedRouter history={history}>
         <Component />
       </ConnectedRouter>
     </Provider>,

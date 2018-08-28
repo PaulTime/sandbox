@@ -3,7 +3,6 @@ import { SubmissionError } from 'redux-form';
 
 import { setAuthorized } from 'common/actions/auth';
 
-
 export default ({ type, ...config }) => (dispatch) => {
   const result = { ...config };
   const isBodyObject = config.body && typeof config.body === 'object';

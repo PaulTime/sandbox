@@ -1,9 +1,4 @@
-.login {
-  &__test-div {
-    min-width: 120px;
-    min-height: 150px;
-
-    background-size: contain;
-    background: url('/static/img/googlelogo.png');
-  }
+.login-page {
+  max-width: 200px;
+  margin: 0 auto;
 }
