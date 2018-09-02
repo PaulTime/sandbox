@@ -60,10 +60,30 @@ export const login = async (request, response) => {
   }
 };
 
-const createSession = async (response, data = {}) => {
+export const refresh = async (request, response) => {
+  try {
+    const { [REFRESH_TOKEN_NAME]: refreshToken, _session } = request.cookies;
+    const userRefreshToken = await redis.client.hget(_session, REFRESH_TOKEN_NAME);
+
+    if (refreshToken !== userRefreshToken) {
+      response
+        .status(400)
+        .json({ token: 'incorrect refresh token' });
+      return;
+    }
+
+    await createSession(response, {}, _session);
+  } catch (error) {
+    response
+      .status(500)
+      .json({ error: error.toString() });
+  }
+};
+
+const createSession = async (response, data = {}, _session) => {
   const accessToken = generateRandomToken();
   const refreshToken = generateRandomToken();
-  const sessionId = generateRandomToken();
+  const sessionId = _session || generateRandomToken();
 
   await redis.client.hmset(sessionId, {
     ...data,
@@ -77,5 +97,5 @@ const createSession = async (response, data = {}) => {
     .cookie(REFRESH_TOKEN_NAME, refreshToken, { httpOnly: true, maxAge: REFRESH_TOKEN_TTL })
     .cookie('_session', sessionId, { httpOnly: true, maxAge: REDIS_SESSION_TTL })
     .status(200)
-    .json({ accessToken, refreshToken });
+    .json({ [ACCESS_TOKEN_NAME]: accessToken, [REFRESH_TOKEN_NAME]: refreshToken });
 };

@@ -1,9 +1,14 @@
 import { RSAA } from 'redux-api-middleware';
 import { SubmissionError } from 'redux-form';
 
+import { ACCESS_TOKEN_NAME } from 'common/config';
 import { setAuthorized } from 'common/actions/auth';
 
-export default ({ type, ...config }) => (dispatch) => {
+import { setAuthDataToStore } from './auth';
+
+let refreshPromise = null;
+
+const fetch = ({ type, ...config }) => (dispatch) => {
   const result = { ...config };
   const isBodyObject = config.body && typeof config.body === 'object';
   const isBodyFormData = config.body && config.body instanceof FormData;
@@ -29,7 +34,7 @@ export default ({ type, ...config }) => (dispatch) => {
 
   result.headers = {
     ...result.headers,
-    ...(!isBodyFormData ? { 'content-type': 'application/json' } : {}),
+    ...(isBodyFormData ? {} : { 'content-type': 'application/json' }),
   };
 
   return dispatch({
@@ -39,9 +44,35 @@ export default ({ type, ...config }) => (dispatch) => {
     },
   }).then(async response => {
     const { status: statusCode } = response.payload || {};
-    if (statusCode === 401) {
-      await dispatch(setAuthorized(false));
-      return response;
+
+    if (statusCode === 401 && !refreshPromise) {
+      refreshPromise = (async () => {
+        const fetchRefresh = await dispatch({
+          [RSAA]: {
+            endpoint: '/api/auth-service/refresh',
+            method: 'GET',
+            headers: {
+              'content-type': 'application/json'
+            },
+            credentials: 'include',
+            types: ['REFRESH_REQUEST', 'REFRESH_SUCCESS', 'REFRESH_FAILURE']
+          },
+        });
+
+        if (fetchRefresh.error) {
+          await dispatch(setAuthorized(false));
+        } else {
+          await dispatch(setAuthDataToStore(fetchRefresh.payload));
+        }
+
+        return { refreshSucceeded: Boolean(fetchRefresh.payload[ACCESS_TOKEN_NAME]) };
+      })();
+    }
+
+    if (statusCode === 401 && refreshPromise instanceof Promise) {
+      const { refreshSucceeded } = await refreshPromise;
+
+      if (refreshSucceeded) return dispatch(fetch({ type, ...config }));
     }
 
     if (statusCode === 400 && response.error) {
@@ -51,3 +82,5 @@ export default ({ type, ...config }) => (dispatch) => {
     return response;
   });
 };
+
+export default fetch;

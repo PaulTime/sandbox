@@ -4,6 +4,7 @@ import redis from 'server/services/redis';
 const WHITE_LIST = [
   '/auth-service/register',
   '/auth-service/login',
+  '/auth-service/refresh',
 ];
 
 export default async (request, response, next) => {
