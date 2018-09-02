@@ -1,7 +1,7 @@
 import redis from 'server/services/redis';
 
 export default async (request, response, next) => {
-  const { cookies: { _session } } = request;
+  const { _session } = request.cookies;
 
   let hasSession;
 

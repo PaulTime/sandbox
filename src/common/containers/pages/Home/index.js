@@ -9,8 +9,14 @@ import fetchAPI from 'common/redux/api';
 @withRouter
 @connect(null, dispatch => ({
   testAPI() {
-    return dispatch(fetchAPI({
+    dispatch(fetchAPI({
       endpoint: '/api/test-service/test',
+      method: 'GET',
+      type: 'TEST',
+    }));
+
+    dispatch(fetchAPI({
+      endpoint: '/api/test-service/test_2',
       method: 'GET',
       type: 'TEST',
     }));

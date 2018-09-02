@@ -32,7 +32,6 @@ app.use('/static', express.static(path.resolve(__dirname, '../static')));
 
 app.disable('x-powered-by');
 
-// TODO refresh route
 app.use('/api', routes);
 
 app.get('*', async (request, response) => {
