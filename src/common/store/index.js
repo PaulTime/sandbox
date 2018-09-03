@@ -25,7 +25,7 @@ export default async ({ preloadedState = {}, cookie, history }, server = false) 
     )
   );
 
-  if(IS_DEVELOP && module.hot) {
+  if (IS_DEVELOP && module.hot) {
     module.hot.accept('common/actions', () => {
       const nextReducer = require('common/actions').default;
 
@@ -35,8 +35,8 @@ export default async ({ preloadedState = {}, cookie, history }, server = false) 
 
   if (server) {
     await store.dispatch(setAuthDataToStore({
-      accessToken: cookie.get(ACCESS_TOKEN_NAME),
-      refreshToken: cookie.get(REFRESH_TOKEN_NAME),
+      [ACCESS_TOKEN_NAME]: cookie.get(ACCESS_TOKEN_NAME),
+      [REFRESH_TOKEN_NAME]: cookie.get(REFRESH_TOKEN_NAME),
     }));
   }
 

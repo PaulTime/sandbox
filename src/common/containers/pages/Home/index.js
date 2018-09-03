@@ -18,7 +18,7 @@ import fetchAPI from 'common/redux/api';
     dispatch(fetchAPI({
       endpoint: '/api/test-service/test_2',
       method: 'GET',
-      type: 'TEST',
+      type: 'TEST_2',
     }));
   }
 }))
