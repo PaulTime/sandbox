@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { registration, login, refresh } from 'server/controllers/auth';
+import { registration, login, refresh, logout } from 'server/controllers/auth';
 import sessionMiddleware from 'server/middlewares/session';
 import authMiddleware from 'server/middlewares/auth';
 
@@ -10,6 +10,7 @@ router.use(sessionMiddleware);
 
 router.post('/auth-service/register', authMiddleware, registration);
 router.post('/auth-service/login', authMiddleware, login);
+router.get('/auth-service/logout', logout);
 router.get('/auth-service/refresh', refresh);
 
 router.get('/test-service/test_2', (request, response) => {

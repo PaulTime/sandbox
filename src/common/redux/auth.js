@@ -24,7 +24,7 @@ export const fetchLoginRequest = data => async (dispatch) => {
 
   await dispatch(setAuthDataToStore(response.payload));
 
-  await dispatch(push('/media'));
+  await dispatch(push('/filter'));
 };
 
 export const fetchSignupRequest = data => async (dispatch) => {
@@ -36,7 +36,19 @@ export const fetchSignupRequest = data => async (dispatch) => {
 
   await dispatch(setAuthDataToStore(response.payload));
 
-  await dispatch(push('/media'));
+  await dispatch(push('/filter'));
+};
+
+export const fetchLogoutRequest = () => async (dispatch) => {
+  const response = await dispatch(fetchLogoutData());
+
+  if (response.error) {
+    return;
+  }
+
+  await dispatch(setAuthDataToStore({}));
+
+  await dispatch(push('/'));
 };
 
 const fetchLoginData = body => fetchAPI({
@@ -51,4 +63,10 @@ const fetchSignupData = body => fetchAPI({
   method: 'POST',
   type: 'REGISTRATION',
   body,
+});
+
+const fetchLogoutData = () => fetchAPI({
+  endpoint: '/api/auth-service/logout',
+  method: 'GET',
+  type: 'LOGOUT',
 });

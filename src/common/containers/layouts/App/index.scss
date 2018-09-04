@@ -1,0 +1,11 @@
+.app-layout {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  font-size: 16px;
+
+  &__pages-layout {
+    padding-top: 15px;
+    flex-grow: 1;
+  }
+}

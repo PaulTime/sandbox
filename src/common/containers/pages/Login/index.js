@@ -21,11 +21,11 @@ export default class LoginPage extends React.PureComponent {
 
   render(bem) {
     return (
-      <div className={bem()}>
-        <h2 className={bem('title')}>Login form</h2>
+      <section className={bem()}>
+        <header className={bem('title')}>Login form</header>
 
         <LoginForm onSubmit={data => this.props.fetchLoginRequest(data)} />
-      </div>
+      </section>
     );
   }
 }

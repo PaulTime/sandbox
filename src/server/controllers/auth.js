@@ -80,6 +80,23 @@ export const refresh = async (request, response) => {
   }
 };
 
+export const logout = async (request, response) => {
+  try {
+    const { _session } = request.cookies;
+    await redis.client.del(_session);
+
+    response
+      .clearCookie(ACCESS_TOKEN_NAME, { httpOnly: true, maxAge: ACCESS_TOKEN_TTL })
+      .clearCookie(REFRESH_TOKEN_NAME, { httpOnly: true, maxAge: REFRESH_TOKEN_TTL })
+      .clearCookie('_session', { httpOnly: true, maxAge: REDIS_SESSION_TTL })
+      .sendStatus(200);
+  } catch (error) {
+    response
+      .status(500)
+      .json({ error: error.toString() });
+  }
+};
+
 const createSession = async (response, data = {}, _session) => {
   const accessToken = generateRandomToken();
   const refreshToken = generateRandomToken();
