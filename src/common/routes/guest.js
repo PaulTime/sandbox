@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
 import { selectIsAuthorized } from 'common/selectors/auth';
 
 @connect(state => ({
   isAuthorized: selectIsAuthorized(state),
 }))
-export default class PrivateLayout extends React.PureComponent {
+export default class GuestRoute extends React.PureComponent {
   static propTypes = {
-    children: PropTypes.node.isRequired,
     isAuthorized: PropTypes.bool,
   };
 
@@ -19,10 +18,10 @@ export default class PrivateLayout extends React.PureComponent {
   };
 
   render () {
-    const { children, isAuthorized } = this.props;
+    const { isAuthorized, ...rest } = this.props;
 
-    if (isAuthorized) return children;
+    if (isAuthorized) return <Redirect to="/filter" />;
 
-    return <Redirect to="/login" />;
+    return <Route {...rest} />;
   }
 }

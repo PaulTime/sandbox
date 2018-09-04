@@ -37,14 +37,14 @@ export default class Home extends React.PureComponent {
   componentDidMount() {
     const { location, testAPI } = this.props;
 
-    if(location.pathname.includes('/media')) {
+    if(location.pathname.includes('/filter')) {
       testAPI();
     }
   }
 
   render(bem) {
     return (
-      <main>
+      <main className={bem()}>
         <h1>Home</h1>
 
         <img src="/static/img/googlelogo.png" alt="GoogleLogo"/>

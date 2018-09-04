@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__logo {
+    max-height: 64px;
+    max-width: 64px;
+  }
+
+  &__link {
+    margin-right: 15px;
+  }
+
+  &__button {
+    margin-right: 15px;
+  }
+}

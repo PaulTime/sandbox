@@ -17,7 +17,6 @@ delete window.__PRELOADED_STATE__;
 let store;
 const history = createBrowserHistory();
 
-// TODO add guest layout for authorized users
 const hydrate = async (Component) => {
   store = store || await configStore({ preloadedState, cookie: CookieDough(), history });
 
