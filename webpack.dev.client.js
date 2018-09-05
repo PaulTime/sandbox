@@ -32,9 +32,9 @@ module.exports = {
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
     },
     proxy: {
-      '/static': {
-        target: 'http://localhost:4004/',
-        changeOrigin: true
+      '/static/**': {
+        target: path.resolve(__dirname, 'static'),
+        changeOrigin: true,
       }
     }
   },

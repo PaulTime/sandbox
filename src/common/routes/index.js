@@ -4,6 +4,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import Registration from 'common/containers/pages/Registration';
 import Login from 'common/containers/pages/Login';
 import Home from 'common/containers/pages/Home';
+import Filter from 'common/containers/pages/Filter';
 
 import PrivateRoute from './private';
 import GuestRoute from './guest';
@@ -16,7 +17,7 @@ export default class AppRoutes extends React.PureComponent {
         <GuestRoute exact path="/registration" component={Registration} />
         <GuestRoute exact path="/login" component={Login} />
 
-        <PrivateRoute exact path="/filter" component={Home} />
+        <PrivateRoute exact path="/filter" component={Filter} />
 
         <Route exact path="/" component={Home}/>
       </Switch>
