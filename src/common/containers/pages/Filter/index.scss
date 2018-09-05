@@ -1,0 +1,30 @@
+.filter-page {
+  &__title {
+    margin-bottom: 18px;
+    font-size: 22px;
+  }
+
+  &__sub-title {
+    font-weight: 400;
+    margin-bottom: 18px;
+    font-size: 18px;
+  }
+
+  &__meme-list {
+    max-width: 1040px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  &__meme-item {
+    margin-bottom: 14px;
+    max-width: 48%;
+  }
+
+  &__meme {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+}

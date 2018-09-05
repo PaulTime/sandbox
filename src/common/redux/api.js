@@ -1,12 +1,11 @@
 import { RSAA } from 'redux-api-middleware';
 import { SubmissionError } from 'redux-form';
 
-import { ACCESS_TOKEN_NAME } from 'common/config';
 import { setAuthorized } from 'common/actions/auth';
 
 import { setAuthDataToStore } from './auth';
 
-let refreshPromise = null;
+let refreshPromise;
 
 const fetch = ({ type, ...config }) => (dispatch) => {
   const result = { ...config };
@@ -46,33 +45,29 @@ const fetch = ({ type, ...config }) => (dispatch) => {
     const { status: statusCode } = response.payload || {};
 
     if (statusCode === 401 && !refreshPromise) {
-      refreshPromise = (async () => {
-        const fetchRefresh = await dispatch({
-          [RSAA]: {
-            endpoint: '/api/auth-service/refresh',
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json'
-            },
-            credentials: 'include',
-            types: ['REFRESH_REQUEST', 'REFRESH_SUCCESS', 'REFRESH_FAILURE']
+      refreshPromise = dispatch({
+        [RSAA]: {
+          endpoint: '/api/auth-service/refresh',
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json'
           },
-        });
-
-        if (fetchRefresh.error) {
-          await dispatch(setAuthorized(false));
-        } else {
-          await dispatch(setAuthDataToStore(fetchRefresh.payload));
-        }
-
-        return { refreshSucceeded: Boolean(fetchRefresh.payload[ACCESS_TOKEN_NAME]) };
-      })();
+          credentials: 'include',
+          types: ['REFRESH_REQUEST', 'REFRESH_SUCCESS', 'REFRESH_FAILURE']
+        },
+      });
     }
 
     if (statusCode === 401 && refreshPromise instanceof Promise) {
-      const { refreshSucceeded } = await refreshPromise;
+      const fetchRefresh = await refreshPromise;
+      refreshPromise = undefined;
 
-      if (refreshSucceeded) return dispatch(fetch({ type, ...config }));
+      if (fetchRefresh.error) {
+        await dispatch(setAuthorized(false));
+      } else {
+        await dispatch(setAuthDataToStore(fetchRefresh.payload));
+        return dispatch(fetch({ type, ...config }));
+      }
     }
 
     if (statusCode === 400 && response.error) {
