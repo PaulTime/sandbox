@@ -16,9 +16,15 @@ import './index.scss';
     }));
 
     dispatch(fetchAPI({
-      endpoint: '/api/test-service/test_2',
+      endpoint: '/api/test-service/test',
       method: 'GET',
       type: 'TEST_2',
+    }));
+
+    dispatch(fetchAPI({
+      endpoint: '/api/test-service/test',
+      method: 'GET',
+      type: 'TEST_3',
     }));
   }
 }))
