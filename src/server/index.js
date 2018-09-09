@@ -29,6 +29,7 @@ app.set('view engine', 'mustache');
 app.set('views', path.resolve(__dirname, '../views'));
 
 app.use('/static', express.static(path.resolve(__dirname, '../static')));
+app.use('/public', express.static(path.resolve(__dirname, './public')));
 
 app.disable('x-powered-by');
 
@@ -50,8 +51,8 @@ app.get('*', async (request, response) => {
   response.render('template', {
     page,
     preloadedState: JSON.stringify(preloadedState).replace(/</g, '\\u003c'),
-    jsPath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/client.js',
-    cssPath: IS_DEVELOP ? undefined : '/client.css',
+    jsPath: IS_DEVELOP ? 'http://localhost:9000/client.js' : '/public/client.js',
+    cssPath: IS_DEVELOP ? undefined : '/public/client.css',
   });
 });
 
