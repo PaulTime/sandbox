@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import bemDecorator from 'cn-decorator';
 
 import fetchAPI from 'common/redux/api';
+import Filter from 'common/components/Filter';
 
 import './index.scss';
 
@@ -59,6 +60,8 @@ export default class Home extends React.PureComponent {
               <img className={bem('meme')} src="//i.imgur.com/vJv5y9O.gif" alt="Im working" />
             </li>
           </ul>
+
+          <Filter />
         </article>
       </main>
     );

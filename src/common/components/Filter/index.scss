@@ -1,0 +1,19 @@
+.filter {
+  margin-bottom: 30px;
+
+  &__title {
+    font-weight: 400;
+    font-size: 16px;
+  }
+
+  &__file {
+    padding: 15px 0;
+    display: block;
+  }
+
+  &__controls {
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 850px;
+  }
+}
