@@ -1,8 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 import { SubmissionError } from 'redux-form';
 
-import { setAuthorized } from 'common/actions/auth';
-
 import { setAuthDataToStore } from './auth';
 
 let refreshPromise;
@@ -55,6 +53,10 @@ const fetch = ({ type, ...config }) => (dispatch) => {
           credentials: 'include',
           types: ['REFRESH_REQUEST', 'REFRESH_SUCCESS', 'REFRESH_FAILURE']
         },
+      }).then(async (refreshResponse) => {
+        await dispatch(setAuthDataToStore(refreshResponse.error ? {} : refreshResponse.payload));
+
+        return refreshResponse;
       });
     }
 
@@ -62,10 +64,7 @@ const fetch = ({ type, ...config }) => (dispatch) => {
       const fetchRefresh = await refreshPromise;
       refreshPromise = undefined;
 
-      if (fetchRefresh.error) {
-        await dispatch(setAuthorized(false));
-      } else {
-        await dispatch(setAuthDataToStore(fetchRefresh.payload));
+      if (!fetchRefresh.error) {
         return dispatch(fetch({ type, ...config }));
       }
     }
