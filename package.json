@@ -22,7 +22,7 @@
     "mongoose": "^5.2.7",
     "postcss-nested": "^3.0.0",
     "postcss-scss": "^1.0.6",
-    "react": "^16.2.0",
+    "react": "^16.5.1",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-router-redux": "^5.0.0-alpha.9",

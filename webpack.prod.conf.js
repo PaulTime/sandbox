@@ -17,7 +17,6 @@ module.exports = [
       filename: 'client.js',
     },
 
-    devtool: 'cheap-module-source-map',
     mode: 'production',
 
     resolve: {
@@ -79,7 +78,6 @@ module.exports = [
       whitelist: [/\.(?!(?:jsx?|json)$).{1,5}$/i],
     })],
 
-    devtool: 'source-map',
     mode: 'production',
 
     resolve: {

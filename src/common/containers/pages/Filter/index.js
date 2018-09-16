@@ -1,47 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import bemDecorator from 'cn-decorator';
 
 import fetchAPI from 'common/redux/api';
+import fetch from 'common/services/fetch';
 import Filter from 'common/components/Filter';
 
 import './index.scss';
 
-@connect(null, dispatch => ({
-  testAPI() {
-    dispatch(fetchAPI({
+@fetch(
+  props => async (dispatch) => {
+    await dispatch(fetchAPI({
       endpoint: '/api/test-service/test',
       method: 'GET',
       type: 'TEST',
     }));
 
-    dispatch(fetchAPI({
-      endpoint: '/api/test-service/test',
-      method: 'GET',
-      type: 'TEST_2',
-    }));
-
-    dispatch(fetchAPI({
-      endpoint: '/api/test-service/test',
-      method: 'GET',
-      type: 'TEST_3',
-    }));
-  }
-}))
+    return props;
+  },
+  {
+    setPropsToWatch(propsToWatch) {
+      return { prop: propsToWatch.prop };
+    }
+  },
+)
 @bemDecorator('filter-page')
-export default class Home extends React.PureComponent {
-  static propTypes = {
-    testAPI: PropTypes.func,
-  };
-
-  static defaultProps = {
-    testAPI: () => {},
-  };
-
-  componentDidMount() {
-    this.props.testAPI();
-  }
+export default class FilterPage extends React.PureComponent {
+  static displayName = 'FilterPage';
 
   render(bem) {
     return (
