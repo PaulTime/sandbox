@@ -17,10 +17,7 @@ import './index.scss';
   },
   {
     watchProps: (props) => ({ value: 'props.value' }),
-    filter: (props, watchProps) => {
-      console.log('watchProps', watchProps.value, props.value);
-      return watchProps.value === props.value;
-    },
+    filter: (props, watchProps) => watchProps.value === props.value,
   },
 )
 @bemDecorator('filter-page')

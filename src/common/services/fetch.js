@@ -30,9 +30,9 @@ export default (action, config = {}, stateToProps, dispatchToProps) => Component
 
     static getDerivedStateFromProps(nextProps, prevState) {
       const filter = config.filter || (() => true);
-      const canFetch = filter(nextProps, prevState.watchProps);
+      const needFetch = filter(nextProps, prevState.watchProps);
 
-      if ((canFetch && prevState.mounting) || (canFetch && typeof config.watchProps === 'function')) {
+      if ((needFetch && prevState.mounting) || (needFetch && typeof config.watchProps === 'function')) {
         return { ...prevState, showLoader: true };
       }
 
