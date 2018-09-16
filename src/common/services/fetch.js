@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-export default (action, config, stateToProps, dispatchToProps) => Component => connect(
+export default (action, config = {}, stateToProps, dispatchToProps) => Component => connect(
   stateToProps,
   (dispatch, ownProps) => {
     let selfProps = {};
@@ -11,58 +12,83 @@ export default (action, config, stateToProps, dispatchToProps) => Component => c
     }
 
     return {
-      dispatchFetchAction() {
-        return dispatch(action(ownProps));
-      },
+      dispatch,
       ...selfProps,
     };
   },
 )(
-  class FetchDecorator extends React.PureComponent {
+  class FetchDecorator extends React.Component {
     static displayName = 'FetchDecorator';
 
+    static propTypes = {
+      dispatch: PropTypes.func,
+    };
+
+    static defaultProps = {
+      dispatch: () => {},
+    };
+
     static getDerivedStateFromProps(nextProps, prevState) {
-      const viewConfig = config || {};
-      const filter = viewConfig.filter || (() => true);
-      let watch = viewConfig.watch;
+      const filter = config.filter || (() => true);
+      const canFetch = filter(nextProps, prevState.watchProps);
 
-      if (Array.isArray(watch)) {
-
+      if ((canFetch && prevState.mounting) || (canFetch && typeof config.watchProps === 'function')) {
+        return { ...prevState, showLoader: true };
       }
 
-      const fetching = !prevState.fetchedOnMount && filter(nextProps, prevState);
-
-      return { ...prevState, fetching };
+      return prevState;
     }
 
     state = {
-      fetchedOnMount: false,
-      fetching: false,
+      mounting: true,
+      showLoader: false,
       injectedProps: {},
       watchProps: {},
     };
+
+    isFetching = false;
 
     componentDidMount() {
       this.fetch();
     }
 
+    shouldComponentUpdate() {
+      return !this.isFetching;
+    }
+
     componentDidUpdate() {
-      // this.fetch();
+      this.fetch();
     }
 
     fetch() {
-      const filter = (config && config.filter) || (() => true);
+      const { dispatch } = this.props;
+      const { showLoader } = this.state;
+      const watchProps = config.watchProps || (() => {});
 
-      !this.state.fetching && filter(this.props) && this.props.dispatchFetchAction()
-        .then((injectedProps) => { this.setState({ fetching: false, fetchedOnMount: true, injectedProps }); })
-        .catch(() => { this.setState({ fetching: false, fetchedOnMount: true }); });
+      this.isFetching = showLoader;
+
+      this.isFetching && dispatch(action(this.props))
+        .then((injectedProps = {}) => {
+          this.isFetching = false;
+
+          this.setState({
+            showLoader: false,
+            mounting: false,
+            injectedProps,
+            watchProps: watchProps(this.props),
+          });
+        })
+        .catch(() => {
+          this.isFetching = false;
+
+          this.setState({ showLoader: false, mounting: false });
+        });
     }
 
     render() {
-      const { fetching, injectedProps } = this.state;
-      console.log('fetching', fetching);
+      const { showLoader, injectedProps } = this.state;
 
-      if (fetching) {
+      if (showLoader) {
         return <p>loading...</p>;
       }
 

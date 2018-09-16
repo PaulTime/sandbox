@@ -14,13 +14,13 @@ import './index.scss';
       method: 'GET',
       type: 'TEST',
     }));
-
-    return props;
   },
   {
-    setPropsToWatch(propsToWatch) {
-      return { prop: propsToWatch.prop };
-    }
+    watchProps: (props) => ({ value: 'props.value' }),
+    filter: (props, watchProps) => {
+      console.log('watchProps', watchProps.value, props.value);
+      return watchProps.value === props.value;
+    },
   },
 )
 @bemDecorator('filter-page')
