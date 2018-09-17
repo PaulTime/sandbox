@@ -2,20 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-export default (action, config = {}, stateToProps, dispatchToProps) => Component => connect(
-  stateToProps,
-  (dispatch, ownProps) => {
-    let selfProps = {};
-
-    if (dispatchToProps && typeof dispatchToProps === 'function') {
-      selfProps = dispatchToProps(dispatch, ownProps);
-    }
-
-    return {
-      dispatch,
-      ...selfProps,
-    };
-  },
+export default (action, config = {}) => Component => connect(
+  null,
+  dispatch => ({ dispatch }),
 )(
   class FetchDecorator extends React.PureComponent {
     static displayName = 'FetchDecorator';
