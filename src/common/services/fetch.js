@@ -17,7 +17,7 @@ export default (action, config = {}, stateToProps, dispatchToProps) => Component
     };
   },
 )(
-  class FetchDecorator extends React.Component {
+  class FetchDecorator extends React.PureComponent {
     static displayName = 'FetchDecorator';
 
     static propTypes = {
@@ -46,14 +46,8 @@ export default (action, config = {}, stateToProps, dispatchToProps) => Component
       watchProps: {},
     };
 
-    isFetching = false;
-
     componentDidMount() {
       this.fetch();
-    }
-
-    shouldComponentUpdate() {
-      return !this.isFetching;
     }
 
     componentDidUpdate() {
@@ -65,12 +59,8 @@ export default (action, config = {}, stateToProps, dispatchToProps) => Component
       const { showLoader } = this.state;
       const watchProps = config.watchProps || (() => {});
 
-      this.isFetching = showLoader;
-
       showLoader && dispatch(action(this.props))
         .then((injectedProps = {}) => {
-          this.isFetching = false;
-
           this.setState({
             showLoader: false,
             mounting: false,
@@ -79,8 +69,6 @@ export default (action, config = {}, stateToProps, dispatchToProps) => Component
           });
         })
         .catch(() => {
-          this.isFetching = false;
-
           this.setState({ showLoader: false, mounting: false });
         });
     }
