@@ -21,7 +21,7 @@ export default (action, config = {}) => Component => connect(
       const filter = config.filter || (() => true);
       const needFetch = filter(nextProps, prevState.watchProps);
 
-      if ((needFetch && prevState.mounting) || (needFetch && config.watchProps)) {
+      if (needFetch && (prevState.mounting || config.watchProps)) {
         return { ...prevState, showLoader: true };
       }
 
@@ -46,7 +46,7 @@ export default (action, config = {}) => Component => connect(
     fetch() {
       const { dispatch } = this.props;
       const { showLoader } = this.state;
-      const watchProps = config.watchProps || (() => {});
+      const watchProps = typeof config.watchProps === 'function' ? config.watchProps : (() => {});
 
       showLoader && dispatch(action(this.props))
         .then((injectedProps = {}) => {
