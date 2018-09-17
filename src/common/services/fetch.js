@@ -32,11 +32,11 @@ export default (action, config = {}, stateToProps, dispatchToProps) => Component
       const filter = config.filter || (() => true);
       const needFetch = filter(nextProps, prevState.watchProps);
 
-      if ((needFetch && prevState.mounting) || (needFetch && typeof config.watchProps === 'function')) {
+      if ((needFetch && prevState.mounting) || (needFetch && config.watchProps)) {
         return { ...prevState, showLoader: true };
       }
 
-      return prevState;
+      return null;
     }
 
     state = {
@@ -67,7 +67,7 @@ export default (action, config = {}, stateToProps, dispatchToProps) => Component
 
       this.isFetching = showLoader;
 
-      this.isFetching && dispatch(action(this.props))
+      showLoader && dispatch(action(this.props))
         .then((injectedProps = {}) => {
           this.isFetching = false;
 
