@@ -35,6 +35,8 @@ export default (action, config = {}) => Component => connect(
       watchProps: {},
     };
 
+    fetchChecksum = '';
+
     componentDidMount() {
       this.fetch();
     }
@@ -44,21 +46,29 @@ export default (action, config = {}) => Component => connect(
     }
 
     fetch() {
-      const { dispatch } = this.props;
-      const { showLoader } = this.state;
-      const watchProps = typeof config.watchProps === 'function' ? config.watchProps : (() => {});
+      const makeWatchProps = typeof config.watchProps === 'function' ? config.watchProps : (() => {});
+      this.fetchChecksum = JSON.stringify(makeWatchProps(this.props));
 
-      showLoader && dispatch(action(this.props))
+
+      this.state.showLoader && this.props.dispatch(action(this.props))
         .then((injectedProps = {}) => {
-          this.setState({
-            showLoader: false,
-            mounting: false,
-            injectedProps,
-            watchProps: watchProps(this.props),
-          });
+          const watchProps = makeWatchProps(this.props);
+
+          if (this.fetchChecksum === JSON.stringify(watchProps)) {
+            this.setState({
+              showLoader: false,
+              mounting: false,
+              injectedProps,
+              watchProps,
+            });
+          }
         })
         .catch(() => {
-          this.setState({ showLoader: false, mounting: false });
+          const watchProps = makeWatchProps(this.props);
+
+          if (this.fetchChecksum === JSON.stringify(watchProps)) {
+            this.setState({ showLoader: false, mounting: false });
+          }
         });
     }
 
