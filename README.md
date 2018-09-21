@@ -14,8 +14,7 @@ npm run dev
 npm i
 sudo mongod
 redis-server
-npm run production:build
-npm run production:start
+npm run start
 ```
 
 Open in browser http://localhost:4004
