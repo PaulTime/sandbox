@@ -1,5 +1,3 @@
-import { push } from 'react-router-redux';
-
 import { ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from 'common/config';
 import { setAuthToken, setRefreshToken, setAuthorized } from 'common/actions/auth';
 
@@ -23,8 +21,6 @@ export const fetchLoginRequest = data => async (dispatch) => {
   }
 
   await dispatch(setAuthDataToStore(response.payload));
-
-  await dispatch(push('/filter'));
 };
 
 export const fetchSignupRequest = data => async (dispatch) => {
@@ -35,8 +31,6 @@ export const fetchSignupRequest = data => async (dispatch) => {
   }
 
   await dispatch(setAuthDataToStore(response.payload));
-
-  await dispatch(push('/filter'));
 };
 
 export const fetchLogoutRequest = () => async (dispatch) => {
@@ -47,8 +41,6 @@ export const fetchLogoutRequest = () => async (dispatch) => {
   }
 
   await dispatch(setAuthDataToStore({}));
-
-  await dispatch(push('/'));
 };
 
 const fetchLoginData = body => fetchAPI({

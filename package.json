@@ -5,8 +5,7 @@
     "dev": "rm -rf dist/* && NODE_ENV=development npm-run-all --parallel watch:client watch:server",
     "watch:client": "webpack-dev-server --config ./webpack.dev.client.js",
     "watch:server": "webpack --config ./webpack.dev.server.js",
-    "production:build": "rm -rf dist/* && webpack --config ./webpack.prod.conf.js",
-    "production:start": "NODE_ENV=production node ./dist/server.js",
+    "start": "rm -rf dist/* && webpack --progress --config ./webpack.prod.conf.js && NODE_ENV=production node ./dist/server.js",
     "eslint": "eslint 'src/**/*.js'"
   },
   "dependencies": {
@@ -22,7 +21,7 @@
     "mongoose": "^5.2.7",
     "postcss-nested": "^3.0.0",
     "postcss-scss": "^1.0.6",
-    "react": "^16.2.0",
+    "react": "^16.5.1",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-router-redux": "^5.0.0-alpha.9",
