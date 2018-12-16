@@ -11,7 +11,7 @@ export default (action = () => Promise.resolve(), config = {}) => Component => c
     }
 
     componentDidMount() {
-      this.state.showLoader && this.fetch();
+      this.startFetch();
     }
 
     fetch() {
@@ -28,6 +28,10 @@ export default (action = () => Promise.resolve(), config = {}) => Component => c
         });
     };
 
+    startFetch() {
+      this.state.showLoader && this.fetch();
+    }
+
     render() {
       const { showLoader, injectedProps } = this.state;
 
@@ -39,9 +43,7 @@ export default (action = () => Promise.resolve(), config = {}) => Component => c
         <Component
           {...this.props}
           {...injectedProps}
-          fetch={() => {
-            this.setState({ showLoader: confih.filter(this.props) }, this.fetch);
-          }}
+          fetch={() => { this.setState({ showLoader: confih.filter(this.props) }, this.startFetch); }}
         />
       );
     }
