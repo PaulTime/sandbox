@@ -6,12 +6,17 @@ export default (action = () => Promise.resolve(), config = {}) => Component => c
     static displayName = 'FetchDecorator';
 
     state = {
-      showLoader: confih.filter(this.props),
+      showLoader: config.filter(this.props),
       injectedProps: {},
     }
 
     componentDidMount() {
-      this.startFetch();
+      this.state.showLoader && this.fetch();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+      if (this.state.showLoader && prevState.showLoader !== this.state.showLoader)
+        this.fetch()
     }
 
     fetch() {
@@ -28,10 +33,6 @@ export default (action = () => Promise.resolve(), config = {}) => Component => c
         });
     };
 
-    startFetch() {
-      this.state.showLoader && this.fetch();
-    }
-
     render() {
       const { showLoader, injectedProps } = this.state;
 
@@ -43,7 +44,7 @@ export default (action = () => Promise.resolve(), config = {}) => Component => c
         <Component
           {...this.props}
           {...injectedProps}
-          fetch={() => { this.setState({ showLoader: confih.filter(this.props) }, this.startFetch); }}
+          fetch={() => { this.setState({ showLoader: config.filter(this.props) }); }}
         />
       );
     }
