@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 
 export default (action = () => Promise.resolve(), config = {}) => Component => connect()(
-  class FetchDecorator extends React.PureComponent {
+  class FetchDecorator extends React.Component {
     static displayName = 'FetchDecorator';
 
     state = {
