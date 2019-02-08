@@ -1,52 +1,82 @@
-import React from "react";
-import { connect } from 'react-redux';
+import React from 'react'
 
-export default (action = () => Promise.resolve(), config = {}) => Component => connect()(
+import Spinner from 'components/Spinner'
+
+const actionDefault = () => Promise.resolve()
+
+export const configDefault = {
+  filter: () => true,
+  loader: true,
+}
+
+/**
+ * fetch decorator
+ * basic usage:
+ *  fetch(async function(props) { }, configDefault - optional param)(YourReactComponent)
+ *
+ * runs in two steps:
+ *  1. decide whether it need to fetch at all - runs configDefault.filter(props), if return true than fetch decorator
+ *    will show default loader instead of mounting your wrapped component
+ *    (behavior can be extended or changed, depends on config params)
+ *
+ *  2. after loading state has activated - and launch your async action (first argument of decorator)
+ *    loader shows until your async function waiting for being resolved
+ *    (object returned from async function will be merged with props of your component)
+ *
+ * fetching on props update:
+ *  - simply call this.props.fetch() inside your wrapped component to run steps mentioned above
+ */
+export default (action = actionDefault, config = configDefault) => Component =>
   class FetchDecorator extends React.Component {
-    static displayName = 'FetchDecorator';
+    static displayName = `Fetch(${Component.displayName || Component.name})`
 
     state = {
-      showLoader: config.filter(this.props),
+      loading: config.filter(this.props),
       injectedProps: {},
     }
 
     componentDidMount() {
-      this.state.showLoader && this.fetch();
+      this.state.loading && this.fetch()
     }
 
     componentDidUpdate(prevProps, prevState) {
-      if (this.state.showLoader && prevState.showLoader !== this.state.showLoader)
+      if (this.state.loading && prevState.loading !== this.state.loading)
         this.fetch()
     }
 
-    fetch() {
-      this.props.dispatch(action(this.props))
-        .then((injectedProps = {}) => {
-          this.setState({
-            showLoader: false,
-            injectedProps,
-          });
+    fetch = () => {
+      action({ ...this.props, ...this.state.injectedProps })
+        .then((fetched = {}) => {
+          this.setState(state => ({
+            loading: false,
+            injectedProps: {
+              ...state.injectedProps,
+              ...fetched,
+            },
+          }))
         })
-        .catch((e) => {
-          console.error(e);
-          this.setState({ showLoader: false });
-        });
-    };
+        .catch(error => {
+          console.error(error)
+          this.setState({ loading: false })
+        })
+    }
 
     render() {
-      const { showLoader, injectedProps } = this.state;
+      const { loading, injectedProps } = this.state
 
-      if (showLoader) {
-        return <p>loading...</p>;
+      if (config.loader && loading) {
+        return <Spinner />
       }
 
       return (
         <Component
           {...this.props}
           {...injectedProps}
-          fetch={() => { this.setState({ showLoader: config.filter(this.props) }); }}
+          loading={loading}
+          fetch={() => {
+            this.setState({ loading: config.filter(this.props) })
+          }}
         />
-      );
+      )
     }
   }
-);
