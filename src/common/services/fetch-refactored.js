@@ -1,7 +1,5 @@
 import React from 'react'
 
-import Spinner from 'components/Spinner'
-
 const actionDefault = () => Promise.resolve()
 
 export const configDefault = {
@@ -35,28 +33,32 @@ export default (action = actionDefault, config = configDefault) => Component =>
       injectedProps: {},
     }
 
+    fetchId = undefined
+
     componentDidMount() {
-      this.state.loading && this.fetch()
+      this.startFetch()
     }
 
-    componentDidUpdate(prevProps, prevState) {
-      if (this.state.loading && prevState.loading !== this.state.loading)
-        this.fetch()
+    startFetch = () => {
+      if (!this.state.loading) return
+
+      this.fetchId = Math.random()
+      this.fetch(this.fetchId)
     }
 
-    fetch = () => {
+    fetch = fetchId => {
       action({ ...this.props, ...this.state.injectedProps })
         .then((fetched = {}) => {
+          if (fetchId !== this.fetchId) return
+
           this.setState(state => ({
             loading: false,
-            injectedProps: {
-              ...state.injectedProps,
-              ...fetched,
-            },
+            injectedProps: fetched,
           }))
         })
         .catch(error => {
-          console.error(error)
+          if (fetchId !== this.fetchId) return
+
           this.setState({ loading: false })
         })
     }
@@ -65,7 +67,7 @@ export default (action = actionDefault, config = configDefault) => Component =>
       const { loading, injectedProps } = this.state
 
       if (config.loader && loading) {
-        return <Spinner />
+        return 'loading...'
       }
 
       return (
@@ -74,7 +76,10 @@ export default (action = actionDefault, config = configDefault) => Component =>
           {...injectedProps}
           loading={loading}
           fetch={() => {
-            this.setState({ loading: config.filter(this.props) })
+            this.setState(
+              { loading: config.filter(this.props) },
+              this.startFetch,
+            )
           }}
         />
       )
